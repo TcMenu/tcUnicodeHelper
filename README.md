@@ -19,6 +19,14 @@ This library provides the full implementation of TcUnicode for use in many diffe
 * U8G2 library - see the packaged U8G2 example.
 * TFT_eSPI - although the library has good Unicode support, this is another option. See the packaged example.
 
+## Includes a UTF-8 decoder for mbed and Arduino
+
+This package includes a strict asynchronous UTF8 decoder that needs very limited memory to operate with, it is backed by a series of tests that ensure it is quite strict. Given the way it operates it is possible to use it with the Print interface as it can push one char at a time. Safely bailing out if a stream is interrupted midway.
+
+## TextPipelines
+
+The way we've implemented the interface between primitive drawing and the Unicode handler means in future we can provide transformations, for example a rotation transformation. For now, they only provide the direct support for drawing on each display type.
+
 ## How does this support work?
 
 Firstly, you can create fonts by generating from a desktop font file directly from "tcMenu Designer" UI on most desktop platforms, and then they are included into your project as a header file.
