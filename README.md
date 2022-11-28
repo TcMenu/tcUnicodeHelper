@@ -1,4 +1,4 @@
-# Provides TcUnicode support to Adafruit_GFX, U8G2, TFT_eSPI and others.
+# TcUnicode support for Adafruit_GFX, U8G2, TFT_eSPI, tcMenu.
 
 ## Summary
 
