@@ -21,7 +21,7 @@ This library provides the full implementation of TcUnicode for use in many diffe
 
 ## Includes a UTF-8 decoder for mbed and Arduino
 
-This package includes a strict asynchronous UTF8 decoder that needs very limited memory to operate with, it is backed by a series of tests that ensure it is quite strict. Given the way it operates it is possible to use it with the Print interface as it can push one char at a time. Safely bailing out if a stream is interrupted midway.
+This package includes a strict asynchronous UTF8 decoder that needs very little memory to operate with, it is backed by a series of tests that ensure it is quite strict. Given the way it operates it is possible to use it with the Print interface as it can push one char at a time. Safely bailing out if a stream is interrupted midway.
 
 ## TextPipelines
 
