@@ -6,6 +6,8 @@
 #ifndef TCMENU_UNICODE_FONT_DEFN
 #define TCMENU_UNICODE_FONT_DEFN
 
+#include <inttypes.h>
+
 #ifndef _GFXFONT_H_
 #define _GFXFONT_H_
 

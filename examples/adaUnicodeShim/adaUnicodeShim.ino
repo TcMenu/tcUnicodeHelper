@@ -6,27 +6,37 @@
 #include <Fonts/FreeSans12pt7b.h>
 #include "Fonts/OpenSansCyrillicLatin18.h"
 
-
 #define TFT_CS   20  // Chip select control pin
 #define TFT_DC   18  // Data Command control pin
 #define TFT_RST  19  // Reset pin (could connect to Arduino RESET pin)
 
+//
+// Here we create an adafruit display, but the font handler works equally well with U8G2, and TFT_eSPI displays.
+// It also works with TcMenu drawable interface and the designer can generate suitable themes.
+//
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
+
+// Create an object that can draw fonts onto the display, this shows adafruit but
+// if using U8G2 you'd simply pass the pointer to your u8g2 object instead
 UnicodeFontHandler fontHandler(&tft, ENCMODE_UTF8);
+
 int yTextSize = 0;
 int yOpenSansSize = 0;
 const char helloText[] PROGMEM = "hello world";
 const char helloUkraine[] PROGMEM = "Привіт Світ";
 
 void setup() {
+    // we use a non-standard SPI setup on our pico
     SPI.setSCK(2);
     SPI.setTX(3);
     SPI.setRX(4);
 
+    // start up serial
     Serial.begin(115200);
     Serial.print(F("Graphics test"));
 
-    tft.begin();      // Init ST7735S chip, black tab
+    // initialise the display
+    tft.begin();
     tft.fillScreen(ILI9341_BLACK);
 
     //

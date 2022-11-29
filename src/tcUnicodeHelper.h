@@ -2,7 +2,8 @@
 #ifndef TC_UNICODE_FONTHELPER_H
 #define TC_UNICODE_FONTHELPER_H
 
-#include <Arduino.h>
+#include <string.h>
+#include <inttypes.h>
 #include "Utf8TextProcessor.h"
 #include "UnicodeFontDefs.h"
 
@@ -56,7 +57,6 @@ public:
 };
 
 #if __has_include (<graphics/GraphicsDeviceRenderer.h>)
-
 #include <graphics/GraphicsDeviceRenderer.h>
 #define UNICODE_TCMENU_GRAPHIC_DEVICE_AVAILABLE
 class DrawableTextPlotPipeline : public TextPlotPipeline {
@@ -167,7 +167,16 @@ public:
 
 void handleUtf8Drawing(void *userData, uint32_t ch);
 
+#if __has_include (<Print.h>)
+#include <Print.h>
 class UnicodeFontHandler : public Print {
+#elif __has_include(<PrintCompat.h>)
+#include <PrintCompat.h>
+class UnicodeFontHandler : public Print {
+#else
+class UnicodeFontHandler {
+#endif
+
 public:
     enum HandlerMode {
         HANDLER_SIZING_TEXT, HANDLER_DRAWING_TEXT

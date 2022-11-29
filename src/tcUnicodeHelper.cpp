@@ -23,6 +23,8 @@ Coord UnicodeFontHandler::textExtents(const char *text, int *baseline, bool prog
     return Coord((int)xExtentCurrent, getYAdvance());
 }
 
+#define internal_max(a, b)  ((a) < (b) ? (b) : (a));
+
 void UnicodeFontHandler::writeUnicode(uint32_t unicodeText) {
     // make sure it's printable.
     auto dims = plotter->getDimensions();
@@ -45,14 +47,14 @@ void UnicodeFontHandler::writeUnicode(uint32_t unicodeText) {
     const uint8_t* bitmap = gb.getBitmapData();
     int bo = 0;
     for (yy = 0; yy < h; yy++) {
-        auto locY = max(0, y + yo + yy);
+        auto locY = internal_max(0, y + yo + yy);
         bool yOK = (locY < yDim);
         for (xx = 0; xx < w; xx++) {
             if (!(bit++ & 7)) {
                 bits = bitmap[bo++];
             }
             if (bits & 0x80) {
-                int locX = max(0, int(x +xo + xx));
+                int locX = internal_max(0, int(x +xo + xx));
                 if (locX < xDim && yOK) {
                     plotter->drawPixel(locX, locY);
                 }

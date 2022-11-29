@@ -6,18 +6,11 @@
 #ifndef TCMENU_UTF8TEXTPROCESSOR_H
 #define TCMENU_UTF8TEXTPROCESSOR_H
 
+#include <string.h>
+#include <inttypes.h>
+
 /* the value that defines an error in character conversion, usual procedure is to call reset() on the text processor */
 #define TC_UNICODE_CHAR_ERROR 0xffffffff
-
-// This defines controls if this is used in the context of multiplatform IoAbstraction (false) or straight Arduino (true)
-// as this is a very useful class, we also provide it outside the regular context for other users.
-#define USED_IN_ARDUINO_ONLY true
-
-#if USED_IN_ARDUINO_ONLY == true
-#include <Arduino.h>
-#else
-#include <PlatformDetermination.h>
-#endif // USED_IN_ARDUINO_ONLY
 
 namespace tccore {
 
