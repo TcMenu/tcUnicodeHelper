@@ -121,7 +121,7 @@ public:
     ~TftSpiTextPlotPipeline()=default;
     void drawPixel(uint16_t x, uint16_t y) override { return tft->drawPixel(x, y, dc); }
     void setColor(uint32_t col) override { dc = col; }
-    Coord getDisplayDimensions() override { return Coord(tft->width(), tft->height());}
+    Coord getDimensions() override { return Coord(tft->width(), tft->height());}
     void setCursor(const Coord& where) override { cursor = where; }
     Coord getCursor() override { return cursor; }
 };
@@ -194,25 +194,21 @@ public:
                                                                                                unicodeFont(nullptr) {}
 
 #ifdef UNICODE_TCMENU_GRAPHIC_DEVICE_AVAILABLE
-
     explicit UnicodeFontHandler(DeviceDrawable *gfx, tccore::UnicodeEncodingMode mode) : utf8(handleUtf8Drawing, this, mode),
                                                                                          unicodeFont(nullptr) {
         plotter = new DrawableTextPlotPipeline(gfx);
     }
-
 #endif
 
 #ifdef UNICODE_ADAGFX_AVAILABLE
-
     explicit UnicodeFontHandler(Adafruit_GFX *gfx, tccore::UnicodeEncodingMode mode) : utf8(handleUtf8Drawing, this, mode),
                                                                                        unicodeFont(nullptr) {
         plotter = new AdafruitTextPlotPipeline(gfx);
     }
-
 #endif
 
 #ifdef UNICODE_TFT_ESPI_AVAILABLE
-    explicit TftSpiTextPlotPipeline(TFT_eSPI* gfx, tccore::UnicodeEncodingMode mode): utf8(handleUtf8Drawing, this, mode), unicodeFont(nullptr) {
+    explicit UnicodeFontHandler(TFT_eSPI* gfx, tccore::UnicodeEncodingMode mode): utf8(handleUtf8Drawing, this, mode), unicodeFont(nullptr) {
         plotter = new TftSpiTextPlotPipeline(gfx);
     }
 #endif
@@ -253,6 +249,21 @@ public:
         adaFont = font;
         fontAdafruit = true;
     }
+
+    /**
+     * Set the cursor position where the next text will be drawn, depending on the library this may also change the
+     * cursor for the library.
+     * @param x the x position
+     * @param y the y position
+     */
+    void setCursor(int16_t x, int16_t y) { plotter->setCursor(Coord(x, y)); }
+
+    /**
+     * Set the cursor position where the next text will be drawn, depending on the library this may also change the
+     * cursor for the library.
+     * @param where the new position
+     */
+    void setCursor(const Coord& where) { plotter->setCursor(where); }
 
     /**
     * Set the drawing color

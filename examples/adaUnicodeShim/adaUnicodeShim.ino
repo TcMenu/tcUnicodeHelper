@@ -16,8 +16,10 @@
 //
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
 
+//
 // Create an object that can draw fonts onto the display, this shows adafruit but
-// if using U8G2 you'd simply pass the pointer to your u8g2 object instead
+// if using U8G2 or TFT_eSPI you'd simply pass the pointer to your display object instead.
+//
 UnicodeFontHandler fontHandler(&tft, ENCMODE_UTF8);
 
 int yTextSize = 0;
@@ -60,7 +62,7 @@ void setup() {
     // the baseline, so we need to add the Y size of the font without the baseline. This is using a regular adafruit
     // graphics font.
     //
-    tft.setCursor(0, yTextSize);
+    fontHandler.setCursor(0, yTextSize);
     fontHandler.setFont(&FreeSans12pt7b);
     fontHandler.setDrawColor(ILI9341_WHITE);
     fontHandler.printf_P(helloText);
@@ -68,17 +70,17 @@ void setup() {
     //
     // Now we print some text just below that that is in unicode, this text is in cyrillic.
     //
-    tft.setCursor(0, 30 + yOpenSansSize);
+    fontHandler.setCursor(0, 30 + yOpenSansSize);
     fontHandler.setFont(OpenSansCyrillicLatin18);
     fontHandler.print(helloUkraine);
 
     //
     // Now we print the X and Y sizes of the adafruit font
     //
-    tft.setCursor(0, yTextSize + 60);
+    fontHandler.setCursor(0, yTextSize + 60);
     fontHandler.setFont(&FreeSans12pt7b);
     fontHandler.print((int)textSize.x);
-    tft.setCursor(80, yTextSize + 60);
+    fontHandler.setCursor(80, yTextSize + 60);
     fontHandler.print((int)textSize.y);
 }
 

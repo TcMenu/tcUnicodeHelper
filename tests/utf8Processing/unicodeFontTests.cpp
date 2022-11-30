@@ -62,3 +62,24 @@ test(testGetGlyph) {
     assertTrue(handler.findCharInFont(65, glyphWithBitmap));
     assertTrue(glyphWithBitmap.getGlyph()->relativeChar == 65);
 }
+
+test(testReadingEveryGlyphInRange) {
+    unitTestPlotter.init();
+    UnicodeFontHandler handler(&unitTestPlotter, ENCMODE_UTF8);
+    handler.setFont(OpenSansCyrillicLatin18);
+    handler.setDrawColor(20);
+
+    GlyphWithBitmap glyphWithBitmap;
+
+    // test all known characters work
+    for(int i=32;i<127;i++) {
+        assertTrue(handler.findCharInFont(i, glyphWithBitmap));
+        assertNotEquals(nullptr, glyphWithBitmap.getGlyph());
+        assertNotEquals(nullptr, glyphWithBitmap.getBitmapData());
+    }
+
+    // test a few that should fail
+    assertTrue(handler.findCharInFont(0, glyphWithBitmap));
+    assertTrue(handler.findCharInFont(5, glyphWithBitmap));
+    assertTrue(handler.findCharInFont(10, glyphWithBitmap));
+}
