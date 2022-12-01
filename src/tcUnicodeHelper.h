@@ -297,6 +297,8 @@ public:
     */
     Coord textExtents_P(const char *text, int *baseline) { return textExtents(text, baseline, true); }
 
+#ifndef __MBED__
+
     /**
     * Get the extents of the text provided in UTF8 as a flash based string using the F() macro
     * @param fh the string provided using _F()
@@ -306,6 +308,8 @@ public:
     Coord textExtents(const __FlashStringHelper *fh, int *baseline) {
         return textExtents((const char *) fh, baseline, true);
     }
+
+#endif
 
     /**
     * Get the extent of a single unicode character

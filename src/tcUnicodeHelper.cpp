@@ -5,6 +5,13 @@
 
 #include "tcUnicodeHelper.h"
 
+#if !defined(pgm_read_byte) && defined(__MBED__)
+#define pgm_read_byte(addr) (*(const unsigned char *)(addr))
+#define pgm_read_word(addr) (*(const unsigned short *)(addr))
+#define pgm_read_dword(addr) (*(const unsigned long *)(addr))
+#define pgm_read_float(addr) (*(const float *)(addr))
+#endif // pgm_read_byte
+
 Coord UnicodeFontHandler::textExtents(const char *text, int *baseline, bool progMem) {
     handlerMode = HANDLER_SIZING_TEXT;
     xExtentCurrent = 0;
