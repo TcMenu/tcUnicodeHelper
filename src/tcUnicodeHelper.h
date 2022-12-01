@@ -11,7 +11,9 @@
 #    include "zio_local_definitions.h"
 #endif
 
-#ifndef TCMENU_DRAWING_PRIMITIVES_H
+#ifndef TC_COORD_DEFINED
+#define TC_COORD_DEFINED
+
 namespace tcgfx {
 
 /** A structure that holds both X and Y direction in a single 32 bit integer. Both x and y are public */
@@ -39,7 +41,7 @@ namespace tcgfx {
     };
 }
 
-#endif // Drawing primitives
+#endif // TC_COORD_DEFINED
 
 using namespace tcgfx;
 

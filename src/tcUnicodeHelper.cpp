@@ -101,7 +101,7 @@ bool UnicodeFontHandler::findCharInFont(uint32_t code, GlyphWithBitmap& glyphBit
     if(adaFont == nullptr) return false; // no font, then no characters!
 
     if (fontAdafruit) {
-        if (code < adaFont->first && code > adaFont->last) return false;
+        if (code < adaFont->first || code > adaFont->last) return false;
         uint32_t idx = code - adaFont->first;
         glyphBitmap.setBitmapData(&adaFont->bitmap[adaFont->glyph[idx].bitmapOffset]);
         globalGlyphForFindChar.relativeChar = code;
