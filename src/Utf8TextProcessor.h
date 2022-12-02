@@ -9,6 +9,10 @@
 #include <string.h>
 #include <inttypes.h>
 
+/**
+ * @file Utf8TextProcessor.h contains a strict asynchronous UTF-8 decoder that uses very little memory.
+ */
+
 /* the value that defines an error in character conversion, usual procedure is to call reset() on the text processor */
 #define TC_UNICODE_CHAR_ERROR 0xffffffff
 
@@ -42,17 +46,47 @@ namespace tccore {
         void* userData;
         const UnicodeEncodingMode encodingMode;
     public:
+        /**
+         * Create an instance of a UTF-8 decoder that will asynchronous process data calling the handler as characters
+         * are decoded from the stream.
+         * @param handler the callback that receives characters
+         * @param userData an optional piece of data to pass back to you in the callback, can be nullptr
+         * @param mode processing mode, either ENCMODE_UTF8 or ENCMODE_EXT_ASCII
+         */
         explicit Utf8TextProcessor(UnicodeCharacterHandler handler, void* userData, UnicodeEncodingMode mode)
                 : handler(handler), userData(userData), encodingMode(mode) {}
+
+        /** completely reset the decoder back to initial state */
         void reset();
 
+        /**
+         * Pushes a single character through the decoder. As characters are decoded the callback will fire.
+         * @param ch the character to process
+         */
         void pushChar(char ch);
+
+        /**
+         * Pushes a string of character data through the encoder.  As characters are decoded the callback will fire.
+         * @param str the string of data to process
+         */
         void pushChars(const char *str);
 
     private:
+        /**
+         * Indicates an error has occurred, somewhat internal to the push.. functions
+         * @param lastCode the last character that we received.
+         */
         void error(char lastCode);
+        /**
+         * Check if the sequence could be smaller, this is to ensure overlong sequences are not allowed
+         * @return true if the sequence could be smaller, otherwise false
+         */
         bool couldSequenceBeSmaller() const;
 
+        /**
+         * When this is called, we are processing the first character in a UTF-8 sequence.
+         * @param data the first character of data.
+         */
         void processChar0(char data);
     };
 

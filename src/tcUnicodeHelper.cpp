@@ -5,11 +5,15 @@
 
 #include "tcUnicodeHelper.h"
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "UnreachableCode"
 #if !defined(pgm_read_byte) && defined(__MBED__)
 #define pgm_read_byte(addr) (*(const unsigned char *)(addr))
 #define pgm_read_word(addr) (*(const unsigned short *)(addr))
 #define pgm_read_dword(addr) (*(const unsigned long *)(addr))
 #define pgm_read_float(addr) (*(const float *)(addr))
+#define pgm_read_ptr(addr) (*(const void*)(addr))
+#define memcpy_P memcpy
 #endif // pgm_read_byte
 
 Coord UnicodeFontHandler::textExtents(const char *text, int *baseline, bool progMem) {
@@ -49,8 +53,6 @@ void UnicodeFontHandler::writeUnicode(uint32_t unicodeText) {
     uint16_t x = posn.x;
     uint16_t y = posn.y;
 
-    plotter->setColor(drawColor);
-
     const uint8_t* bitmap = gb.getBitmapData();
     int bo = 0;
     for (yy = 0; yy < h; yy++) {
@@ -58,12 +60,12 @@ void UnicodeFontHandler::writeUnicode(uint32_t unicodeText) {
         bool yOK = (locY < yDim);
         for (xx = 0; xx < w; xx++) {
             if (!(bit++ & 7)) {
-                bits = bitmap[bo++];
+                bits = pgm_read_byte(&bitmap[bo++]);
             }
             if (bits & 0x80) {
                 int locX = internal_max(0, int(x +xo + xx));
                 if (locX < xDim && yOK) {
-                    plotter->drawPixel(locX, locY);
+                    plotter->drawPixel(locX, locY, drawColor);
                 }
             }
             bits <<= 1;
@@ -82,15 +84,16 @@ Coord UnicodeFontHandler::textExtent(uint32_t theChar) {
 
 const UnicodeFontGlyph *findWithinGlyphs(const UnicodeFontBlock* block, uint32_t ch) {
     size_t start = 0;
-    size_t end = block->numberOfPoints - 1;
+    size_t end = pgm_read_word(&block->numberOfPoints) - 1;
     bool failed = false;
+    auto glyphs = (const UnicodeFontGlyph *)pgm_read_ptr(&block->glyphs);
     while (!failed) {
-        if(block->glyphs[start].relativeChar == ch) return &block->glyphs[start];
-        if(block->glyphs[end].relativeChar == ch) return &block->glyphs[end];
+        if(pgm_read_word(&glyphs[start].relativeChar) == ch) return &glyphs[start];
+        if(pgm_read_word(&glyphs[end].relativeChar) == ch) return &glyphs[end];
 
         size_t middle = ((end - start) / 2) + start;
-        uint32_t charNumMiddle = block->glyphs[middle].relativeChar;
-        if (charNumMiddle == ch) return &block->glyphs[middle];
+        uint32_t charNumMiddle = pgm_read_word(&glyphs[middle].relativeChar);
+        if (charNumMiddle == ch) return &glyphs[middle];
         if (ch < charNumMiddle) {
             end = middle;
         } else {
@@ -101,34 +104,43 @@ const UnicodeFontGlyph *findWithinGlyphs(const UnicodeFontBlock* block, uint32_t
     return nullptr;
 }
 
-
 UnicodeFontGlyph globalGlyphForFindChar;
+
+inline void copyFontGlyphFromProgmem(UnicodeFontGlyph* dest, const UnicodeFontGlyph* src) {
+    memcpy_P(dest, src, sizeof(UnicodeFontGlyph));
+}
 
 bool UnicodeFontHandler::findCharInFont(uint32_t code, GlyphWithBitmap& glyphBitmap) const {
     if(adaFont == nullptr) return false; // no font, then no characters!
 
     if (fontAdafruit) {
-        if (code < adaFont->first || code > adaFont->last) return false;
-        uint32_t idx = code - adaFont->first;
-        glyphBitmap.setBitmapData(&adaFont->bitmap[adaFont->glyph[idx].bitmapOffset]);
+        auto firstCode = pgm_read_word(&adaFont->first);
+        if (code < firstCode || code > pgm_read_word(&adaFont->last)) return false;
+        uint32_t idx = code - firstCode;
+        auto glyphs = (const GFXglyph*)pgm_read_ptr(&adaFont->glyph);
         globalGlyphForFindChar.relativeChar = code;
-        globalGlyphForFindChar.height = adaFont->glyph[idx].height;
-        globalGlyphForFindChar.width = adaFont->glyph[idx].width;
-        globalGlyphForFindChar.xAdvance = adaFont->glyph[idx].xAdvance;
-        globalGlyphForFindChar.xOffset = adaFont->glyph[idx].xOffset;
-        globalGlyphForFindChar.yOffset = adaFont->glyph[idx].yOffset;
-        globalGlyphForFindChar.relativeBmpOffset = 0; // unused
+        globalGlyphForFindChar.height = pgm_read_byte(&glyphs[idx].height);
+        globalGlyphForFindChar.width = pgm_read_byte(&glyphs[idx].width);
+        globalGlyphForFindChar.xAdvance = pgm_read_byte(&glyphs[idx].xAdvance);
+        globalGlyphForFindChar.xOffset = (int8_t)pgm_read_byte(&glyphs[idx].xOffset);
+        globalGlyphForFindChar.yOffset = (int8_t)pgm_read_byte(&glyphs[idx].yOffset);
+        globalGlyphForFindChar.relativeBmpOffset = pgm_read_word(&glyphs[idx].bitmapOffset); // unused
         glyphBitmap.setGlyph(&globalGlyphForFindChar);
+        uint8_t* bitmapPtr = ((uint8_t*)pgm_read_ptr(&adaFont->glyph)) + globalGlyphForFindChar.relativeBmpOffset;
+        glyphBitmap.setBitmapData(bitmapPtr);
         return true;
     } else {
-        for (uint16_t i = 0; i < unicodeFont->numberOfBlocks; i++) {
-            uint32_t startingNum = unicodeFont->unicodeBlocks[i].startingNum;
-            uint32_t endingNum = startingNum + unicodeFont->unicodeBlocks[i].numberOfPoints;
+        uint16_t numBlocks = pgm_read_word(&unicodeFont->numberOfBlocks);
+        auto blocks = (const UnicodeFontBlock*) pgm_read_ptr(&unicodeFont->unicodeBlocks);
+        for (uint16_t i = 0; i < numBlocks; i++) {
+            uint32_t startingNum = pgm_read_dword(&blocks[i].startingNum);
+            uint32_t endingNum = startingNum + pgm_read_word(&blocks[i].numberOfPoints);
             if (code >= startingNum && code <= endingNum) {
-                const UnicodeFontGlyph *glyph = findWithinGlyphs(&unicodeFont->unicodeBlocks[i], code - startingNum);
+                const UnicodeFontGlyph *glyph = findWithinGlyphs(&blocks[i], code - startingNum);
                 if (glyph != nullptr) {
-                    glyphBitmap.setGlyph(glyph);
-                    glyphBitmap.setBitmapData(&unicodeFont->unicodeBlocks[i].bitmap[glyph->relativeBmpOffset]);
+                    copyFontGlyphFromProgmem(&globalGlyphForFindChar, glyph);
+                    glyphBitmap.setGlyph(&globalGlyphForFindChar);
+                    glyphBitmap.setBitmapData(bitmap_offset_read(&blocks[i].bitmap, &globalGlyphForFindChar.relativeBmpOffset));
                     return true;
                 }
             }
@@ -189,3 +201,5 @@ void handleUtf8Drawing(void *data, uint32_t ch) {
     auto fontHandler = reinterpret_cast<UnicodeFontHandler *>(data);
     fontHandler->internalHandleUnicodeFont(ch);
 }
+
+#pragma clang diagnostic pop

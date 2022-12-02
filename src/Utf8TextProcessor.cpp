@@ -22,7 +22,7 @@ void Utf8TextProcessor::pushChars(const char *str) {
 
 void Utf8TextProcessor::pushChar(char data) {
     if (encodingMode == ENCMODE_EXT_ASCII) {
-        handler(userData, data);
+        handler(userData, (uint8_t)data);
         return;
     }
 

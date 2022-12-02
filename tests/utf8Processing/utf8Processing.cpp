@@ -45,8 +45,8 @@ test(testUtf8EncoderAscii) {
     assertEquals((uint32_t)108, getFromBufferOrError());
     assertEquals((uint32_t)108, getFromBufferOrError());
     assertEquals((uint32_t)111, getFromBufferOrError());
-    assertEquals((uint32_t)199, getFromBufferOrError());
-    assertEquals((uint32_t)200, getFromBufferOrError());
+    assertEquals((uint32_t)199U, getFromBufferOrError());
+    assertEquals((uint32_t)200U, getFromBufferOrError());
     assertFalse(unicodeChars.available());
 }
 

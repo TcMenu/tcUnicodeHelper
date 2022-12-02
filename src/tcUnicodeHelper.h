@@ -7,6 +7,10 @@
 #include "Utf8TextProcessor.h"
 #include "UnicodeFontDefs.h"
 
+/**
+ * @file tcUnicodeHelper.h contains a Unicode handler that can process UTF-8 data and print it onto most display types.
+ */
+
 #if __has_include ("zio_local_definitions.h")
 #    include "zio_local_definitions.h"
 #endif
@@ -36,8 +40,8 @@ namespace tcgfx {
         Coord(const Coord &other) = default;
         Coord& operator = (const Coord& other) = default;
 
-        int32_t x: 16;
-        int32_t y: 16;
+        int16_t x;
+        int16_t y;
     };
 }
 
@@ -47,8 +51,8 @@ using namespace tcgfx;
 
 class TextPlotPipeline {
 public:
-    virtual void drawPixel(uint16_t x, uint16_t y) = 0;
-    virtual void setColor(uint32_t color) = 0;
+    virtual ~TextPlotPipeline() = default;
+    virtual void drawPixel(uint16_t x, uint16_t y, uint32_t color) = 0;
     virtual void setCursor(const Coord& where) = 0;
     virtual Coord getCursor() = 0;
     virtual Coord getDimensions() = 0;
@@ -63,9 +67,10 @@ private:
     Coord cursor;
 public:
     explicit DrawableTextPlotPipeline(tcgfx::DeviceDrawable *drawable) : drawable(drawable) {}
-    ~DrawableTextPlotPipeline() = default;
-    void drawPixel(uint16_t x, uint16_t y) override { return drawable->drawPixel(x, y); }
-    void setColor(uint32_t col) override { drawable->setDrawColor(col); }
+    void drawPixel(uint16_t x, uint16_t y, uint32_t color) override {
+        drawable->setDrawColor(color);
+        drawable->drawPixel(x, y);
+    }
     void setCursor(const Coord& where) override { cursor = where; }
     Coord getCursor() override { return cursor; }
     Coord getDimensions() override { return drawable->getDisplayDimensions(); }
@@ -82,8 +87,7 @@ private:
 public:
     explicit U8g2TextPlotPipeline(U8G2* gfx): u8g2(gfx) {}
     ~U8g2TextPlotPipeline() = default;
-    void drawPixel(uint16_t x, uint16_t y) override { return u8g2->drawPixel(x, y); }
-    void setColor(uint32_t col) override { u8g2->setDrawColor(col); }
+    void drawPixel(uint16_t x, uint16_t y, uint32_t color) override { u8g2->drawPixel(x, y); }
     Coord getDimensions() override {  return Coord(u8g2->getWidth(), u8g2->getHeight()); }
     void setCursor(const Coord& where) override { cursor = where; }
     Coord getCursor() override { return cursor; }
@@ -96,18 +100,15 @@ public:
 class AdafruitTextPlotPipeline : public TextPlotPipeline {
 private:
     Adafruit_GFX *gfx;
-    uint32_t dc = 0;
 public:
     explicit AdafruitTextPlotPipeline(Adafruit_GFX *gfx) : gfx(gfx) {
     }
     ~AdafruitTextPlotPipeline() = default;
-    void drawPixel(uint16_t x, uint16_t y) override { return gfx->drawPixel(x, y, dc); }
-    void setColor(uint32_t col) override { dc = col; }
+    void drawPixel(uint16_t x, uint16_t y, uint32_t dc) override { return gfx->drawPixel(x, y, dc); }
     void setCursor(const Coord &where) override { gfx->setCursor(where.x, where.y); }
     Coord getCursor() override {return Coord(gfx->getCursorX(), gfx->getCursorY()); }
     Coord getDimensions() override { return Coord(gfx->width(), gfx->height());}
 };
-
 #endif // Adafruit included
 
 #if __has_include (<TFT_eSPI.h>)
@@ -117,12 +118,10 @@ class TftSpiTextPlotPipeline : public TextPlotPipeline {
 private:
     TFT_eSPI* tft;
     Coord cursor;
-    uint32_t dc = 0;
 public:
     TftSpiTextPlotPipeline(TFT_eSPI* tft) : tft(tft) {}
     ~TftSpiTextPlotPipeline()=default;
-    void drawPixel(uint16_t x, uint16_t y) override { return tft->drawPixel(x, y, dc); }
-    void setColor(uint32_t col) override { dc = col; }
+    void drawPixel(uint16_t x, uint16_t y, uint32_t dc) override { return tft->drawPixel(x, y, dc); }
     Coord getDimensions() override { return Coord(tft->width(), tft->height());}
     void setCursor(const Coord& where) override { cursor = where; }
     Coord getCursor() override { return cursor; }
@@ -194,6 +193,7 @@ public:
     explicit UnicodeFontHandler(TextPlotPipeline *plotter, tccore::UnicodeEncodingMode mode) : utf8(handleUtf8Drawing, this, mode),
                                                                                                plotter(plotter),
                                                                                                unicodeFont(nullptr) {}
+    virtual ~UnicodeFontHandler() = default;
 
 #ifdef UNICODE_TCMENU_GRAPHIC_DEVICE_AVAILABLE
     explicit UnicodeFontHandler(DeviceDrawable *gfx, tccore::UnicodeEncodingMode mode) : utf8(handleUtf8Drawing, this, mode),
@@ -216,7 +216,7 @@ public:
 #endif
 
 #ifdef UNICODE_U8G2_AVAILABLE
-    explicit TftSpiTextPlotPipeline(U8G2* gfx, tccore::UnicodeEncodingMode mode): utf8(handleUtf8Drawing, this, mode), unicodeFont(nullptr) {
+    explicit UnicodeFontHandler(U8G2* gfx, tccore::UnicodeEncodingMode mode): utf8(handleUtf8Drawing, this, mode), unicodeFont(nullptr) {
         plotter = new U8g2TextPlotPipeline(gfx);
     }
 #endif
@@ -351,7 +351,7 @@ public:
     /**
      * @return the total Y advance to move down a line. Call get baseline to get the amount below the baseline.
      */
-    int getYAdvance() const { return fontAdafruit ? adaFont->yAdvance : unicodeFont->yAdvance; }
+    int getYAdvance() const { return pgm_read_byte(fontAdafruit ? &adaFont->yAdvance : &unicodeFont->yAdvance); }
 
     /**
      * Internal function called by the utf8 async callback
