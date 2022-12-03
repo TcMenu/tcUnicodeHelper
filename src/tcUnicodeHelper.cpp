@@ -79,7 +79,7 @@ Coord UnicodeFontHandler::textExtent(uint32_t theChar) {
     if (!findCharInFont(theChar, gb)) {
         return Coord(0, getYAdvance());
     }
-    return Coord(gb.getGlyph()->xAdvance, getYAdvance());
+    return Coord(pgm_read_byte(&gb.getGlyph()->xAdvance), getYAdvance());
 }
 
 const UnicodeFontGlyph *findWithinGlyphs(const UnicodeFontBlock* block, uint32_t ch) {
