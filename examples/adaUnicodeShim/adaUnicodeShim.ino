@@ -6,9 +6,9 @@
 #include <Fonts/FreeSans12pt7b.h>
 #include "Fonts/OpenSansCyrillicLatin18.h"
 
-#define TFT_CS   20  // Chip select control pin
-#define TFT_DC   18  // Data Command control pin
-#define TFT_RST  19  // Reset pin (could connect to Arduino RESET pin)
+#define TFT_CS   22  // Chip select control pin
+#define TFT_DC   17  // Data Command control pin
+#define TFT_RST  16  // Reset pin (could connect to Arduino RESET pin)
 
 //
 // Here we create an adafruit display, but the font handler works equally well with U8G2, and TFT_eSPI displays.
@@ -28,10 +28,13 @@ const char helloText[] PROGMEM = "hello world";
 const char helloUkraine[] PROGMEM = "Привіт Світ";
 
 void setup() {
-    // we use a non-standard SPI setup on our pico
-    SPI.setSCK(2);
-    SPI.setTX(3);
-    SPI.setRX(4);
+    // on ESP32 you may need to adjust the SPI settings, un/comment below
+    SPI.begin(18, 19, 23);
+
+    // On Pico, you may need to set up the SPI pins, un/comment below
+    //SPI.setSCK(2);
+    //SPI.setTX(3);
+    //SPI.setRX(4);
 
     // start up serial
     Serial.begin(115200);
@@ -47,14 +50,14 @@ void setup() {
     //
     int baseLine = 0;
     fontHandler.setFont(OpenSansCyrillicLatin18);
-    Coord openSansSize = fontHandler.textExtents(helloText, &baseLine);
+    Coord openSansSize = fontHandler.textExtents_P(helloText, &baseLine);
     yOpenSansSize = (int)openSansSize.y - baseLine;
 
     //
     // Now get the size of the Adafruit_GFX font that we are using, same as above basically.
     //
     fontHandler.setFont(&FreeSans12pt7b);
-    Coord textSize = fontHandler.textExtents(helloText, &baseLine);
+    Coord textSize = fontHandler.textExtents_P(helloText, &baseLine);
     yTextSize = (int)textSize.y - baseLine;
 
     //
@@ -65,14 +68,14 @@ void setup() {
     fontHandler.setCursor(0, yTextSize);
     fontHandler.setFont(&FreeSans12pt7b);
     fontHandler.setDrawColor(ILI9341_WHITE);
-    fontHandler.printf_P(helloText);
+    fontHandler.print_P(helloText);
 
     //
     // Now we print some text just below that that is in unicode, this text is in cyrillic.
     //
     fontHandler.setCursor(0, 30 + yOpenSansSize);
     fontHandler.setFont(OpenSansCyrillicLatin18);
-    fontHandler.print(helloUkraine);
+    fontHandler.print_P(helloUkraine);
 
     //
     // Now we print the X and Y sizes of the adafruit font

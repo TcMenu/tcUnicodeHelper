@@ -126,7 +126,7 @@ bool UnicodeFontHandler::findCharInFont(uint32_t code, GlyphWithBitmap& glyphBit
         globalGlyphForFindChar.yOffset = (int8_t)pgm_read_byte(&glyphs[idx].yOffset);
         globalGlyphForFindChar.relativeBmpOffset = pgm_read_word(&glyphs[idx].bitmapOffset); // unused
         glyphBitmap.setGlyph(&globalGlyphForFindChar);
-        uint8_t* bitmapPtr = ((uint8_t*)pgm_read_ptr(&adaFont->glyph)) + globalGlyphForFindChar.relativeBmpOffset;
+        uint8_t* bitmapPtr = ((uint8_t*)pgm_read_ptr(&adaFont->bitmap)) + globalGlyphForFindChar.relativeBmpOffset;
         glyphBitmap.setBitmapData(bitmapPtr);
         return true;
     } else {
