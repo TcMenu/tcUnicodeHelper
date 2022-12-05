@@ -10,10 +10,8 @@
 
 #ifdef HUGE_FONT_BITMAPS
 typedef uint32_t bitmap_size_t;
-#define bitmap_offset_read(base, offs) (((uint8_t*)pgm_read_ptr((base))) + pgm_read_dword((offs)))
 #else
 typedef uint16_t bitmap_size_t;
-#define bitmap_offset_read(base, offs) (((uint8_t*)pgm_read_ptr((base))) + pgm_read_word((offs)))
 #endif //HUGE_FONT_BITMAPS
 
 #ifndef _GFXFONT_H_

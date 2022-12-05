@@ -84,7 +84,7 @@ Coord UnicodeFontHandler::textExtent(uint32_t theChar) {
     if (!findCharInFont(theChar, gb)) {
         return Coord(0, getYAdvance());
     }
-    return Coord(pgm_read_byte(&gb.getGlyph()->xAdvance), getYAdvance());
+    return Coord(gb.getGlyph()->xAdvance, getYAdvance());
 }
 
 const UnicodeFontGlyph *findWithinGlyphs(const UnicodeFontBlock* block, uint32_t ch) {
@@ -145,7 +145,7 @@ bool UnicodeFontHandler::findCharInFont(uint32_t code, GlyphWithBitmap& glyphBit
                 if (glyph != nullptr) {
                     copyFontGlyphFromProgmem(&globalGlyphForFindChar, glyph);
                     glyphBitmap.setGlyph(&globalGlyphForFindChar);
-                    glyphBitmap.setBitmapData(bitmap_offset_read(&blocks[i].bitmap, &globalGlyphForFindChar.relativeBmpOffset));
+                    glyphBitmap.setBitmapData(((uint8_t*)pgm_read_ptr(&blocks[i].bitmap)) + globalGlyphForFindChar.relativeBmpOffset);
                     return true;
                 }
             }

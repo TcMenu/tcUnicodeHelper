@@ -147,7 +147,7 @@ public:
     }
 
     /**
-     * @return the glyph instructions for rendering.
+     * @return the glyph instructions for rendering. This structure is always in RAM and not progmem.
      */
     const UnicodeFontGlyph *getGlyph() const {
         return glyph;
@@ -342,7 +342,8 @@ public:
 
     /**
      * Finds a character in the current font, if the character exists it will return true, and the referenced value
-     * type (GlyphWithBitmap) will be filled in.
+     * type (GlyphWithBitmap) will be filled in. Note that the returned glyph is always accessible without progmem
+     * functions on any board. Whereas the bitmap will be in constant memory, so could we require progmem functions.
      * @param ch the character to find.
      * @param glyphBitmap a reference to a structure holding the Glyph and bitmap pointer. Only valid when true returned
      * @return true if successful, otherwise false.
