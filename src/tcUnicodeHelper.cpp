@@ -17,6 +17,11 @@
 #endif // pgm_read_byte
 
 Coord UnicodeFontHandler::textExtents(const char *text, int *baseline, bool progMem) {
+    if(adaFont == nullptr) {
+        baseline = 0;
+        return Coord(0,0);
+    }
+
     handlerMode = HANDLER_SIZING_TEXT;
     xExtentCurrent = 0;
     utf8.reset();
@@ -167,12 +172,15 @@ void UnicodeFontHandler::internalHandleUnicodeFont(uint32_t ch) {
 }
 
 size_t UnicodeFontHandler::write(uint8_t data) {
+    if(adaFont == nullptr) return 0;
+
     handlerMode = HANDLER_DRAWING_TEXT;
     utf8.pushChar((char)data);
     return 1;
 }
 
 size_t UnicodeFontHandler::print_P(const char *textPgm) {
+    if(adaFont == nullptr) return 0;
     uint8_t c;
     size_t count= 0;
     while ((c = pgm_read_byte(textPgm++))) {
@@ -183,6 +191,7 @@ size_t UnicodeFontHandler::print_P(const char *textPgm) {
 }
 
 int UnicodeFontHandler::getBaseline() {
+    if(adaFont == nullptr) return 0;
     auto current = "(|jy";
     uint16_t height = 0;
     int bl = 0;

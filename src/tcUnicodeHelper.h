@@ -94,7 +94,7 @@ public:
 };
 #endif // u8g2 included
 
-#if __has_include (<Adafruit_GFX.h>) && !defined(TC_U8G2_OVERRIDE)
+#if __has_include (<Adafruit_GFX.h>)
 #include <Adafruit_GFX.h>
 #define UNICODE_ADAGFX_AVAILABLE
 class AdafruitTextPlotPipeline : public TextPlotPipeline {
@@ -351,7 +351,10 @@ public:
     /**
      * @return the total Y advance to move down a line. Call get baseline to get the amount below the baseline.
      */
-    int getYAdvance() const { return pgm_read_byte(fontAdafruit ? &adaFont->yAdvance : &unicodeFont->yAdvance); }
+    int getYAdvance() const {
+        if(adaFont == nullptr) return 0;
+        return pgm_read_byte(fontAdafruit ? &adaFont->yAdvance : &unicodeFont->yAdvance);
+    }
 
     /**
      * Internal function called by the utf8 async callback
