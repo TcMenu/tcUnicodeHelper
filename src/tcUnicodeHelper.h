@@ -87,7 +87,7 @@ private:
 public:
     explicit U8g2TextPlotPipeline(U8G2* gfx): u8g2(gfx) {}
     ~U8g2TextPlotPipeline() = default;
-    void drawPixel(uint16_t x, uint16_t y, uint32_t color) override { u8g2->drawPixel(x, y); }
+    void drawPixel(uint16_t x, uint16_t y, uint32_t color) override { u8g2->setColorIndex(color); u8g2->drawPixel(x, y); }
     Coord getDimensions() override {  return Coord(u8g2->getWidth(), u8g2->getHeight()); }
     void setCursor(const Coord& where) override { cursor = where; }
     Coord getCursor() override { return cursor; }
