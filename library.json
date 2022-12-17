@@ -1,7 +1,7 @@
 {
   "name": "tcUnicodeHelper",
   "keywords": "unicode, graphics, font",
-  "description": "Adds tcUnicode support to Adafruit_GFX, U8G2, tcMenu, and TFT_eSPI graphics libraries with a graphical font creation utility available",
+  "description": "Adds tcUnicode UTF-8 support to Adafruit_GFX, U8G2, tcMenu, and TFT_eSPI graphics libraries with a graphical font creation utility available. Works with existing libraries",
   "repository": {
     "type": "git",
     "url": "https://github.com/davetcc/tcUnicodeHelper"
