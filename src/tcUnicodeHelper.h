@@ -7,6 +7,15 @@
 #include "Utf8TextProcessor.h"
 #include "UnicodeFontDefs.h"
 
+#if !defined(pgm_read_dword) && defined(__MBED__)
+#define pgm_read_byte(addr) (*(const unsigned char *)(addr))
+#define pgm_read_word(addr) (*(const unsigned short *)(addr))
+#define pgm_read_dword(addr) (*(const unsigned long *)(addr))
+#define pgm_read_float(addr) (*(const float *)(addr))
+#define pgm_read_ptr(addr) (*(addr))
+#define memcpy_P memcpy
+#endif // pgm_read_byte
+
 /**
  * @file tcUnicodeHelper.h contains a Unicode handler that can process UTF-8 data and print it onto most display types.
  */
@@ -354,7 +363,7 @@ public:
      */
     int getYAdvance() const {
         if(adaFont == nullptr) return 0;
-        return pgm_read_byte(fontAdafruit ? &adaFont->yAdvance : &unicodeFont->yAdvance);
+        return pgm_read_byte((fontAdafruit ? &adaFont->yAdvance : &unicodeFont->yAdvance));
     }
 
     /**
