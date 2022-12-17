@@ -16,7 +16,7 @@ This library provides the full implementation of TcUnicode for use in many diffe
 
 * For TcMenu Device Drawable - the designer supports this format natively.
 * Most Adafruit_GFX libraries - see the packaged Adafruit example.
-* U8G2 library - see the packaged U8G2 example.
+* U8G2 library - although the library has good Unicode support, this is another option. See the packaged example.
 * TFT_eSPI - although the library has good Unicode support, this is another option. See the packaged example.
 
 ## Includes a UTF-8 decoder for mbed and Arduino
