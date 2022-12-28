@@ -4,7 +4,7 @@
 
 TcUnicode provides Unicode character support to a wide range of display libraries (Adafruit_GFX, U8G2, TFT_eSPI, and also TcMenu). There is no need to use special versions of the libraries to use TcUnicode, and there is even a UI for creating the fonts. 
 
-Dave Cherry / TheCodersCorner.com make this framework available for you to use. It takes me significant effort to keep all my libraries current and working on a wide range of boards. Please consider making at least a one off donation via the sponsor button if you find it useful.
+Dave Cherry / TheCodersCorner.com made this framework available for you to use. It takes me significant effort to keep all my libraries current and working on a wide range of boards. Please consider making at least a one off donation via the sponsor button if you find it useful.
 
 In any fork, please ensure all text up to here is left unaltered.
 
@@ -35,3 +35,10 @@ There is a custom dialog within "TcMenu Designer UI" where you can select the Un
 
 Please raise all questions in the main TcMenu repository discussions.
 
+## Questions and documentation
+
+You can ask questions either in the [discussions section of the tcMenu repo](https://github.com/davetcc/tcMenu/discussions), or using the Arduino forum. We generally answer most questions, but the rules of engagement are: **this is my hobby, I make it available because it helps others**. Don't expect immediate answers, make sure you've recreated the problem in a simple sketch that you can send to me. Please consider making at least a one time donation using the sponsor link if we do help you out.
+
+* [discussions section of the tcMenu repo](https://github.com/davetcc/tcMenu/discussions) of tcmenu git repo
+* [Arduino discussion forum](https://forum.arduino.cc/) where questions can be asked, please tag me using `@davetcc`.
+* [Legacy discussion forum probably to be made read only soon](https://www.thecoderscorner.com/jforum/).

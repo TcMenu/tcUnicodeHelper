@@ -17,7 +17,8 @@
 #endif // pgm_read_byte
 
 /**
- * @file tcUnicodeHelper.h contains a Unicode handler that can process UTF-8 data and print it onto most display types.
+ * @file tcUnicodeHelper.h
+ * @brief contains a Unicode handler that can process UTF-8 data and print it onto most display types.
  */
 
 #if __has_include ("zio_local_definitions.h")

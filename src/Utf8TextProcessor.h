@@ -10,7 +10,8 @@
 #include <inttypes.h>
 
 /**
- * @file Utf8TextProcessor.h contains a strict asynchronous UTF-8 decoder that uses very little memory.
+ * @file Utf8TextProcessor.h
+ * @brief contains a strict asynchronous UTF-8 decoder that uses very little memory.
  */
 
 /* the value that defines an error in character conversion, usual procedure is to call reset() on the text processor */

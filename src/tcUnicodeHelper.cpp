@@ -184,18 +184,16 @@ size_t UnicodeFontHandler::print_P(const char *textPgm) {
 
 int UnicodeFontHandler::getBaseline() {
     if(adaFont == nullptr) return 0;
-    auto current = "(|jy";
-    uint16_t height = 0;
+    auto current = "|jy";
     int bl = 0;
     while (*current) {
         GlyphWithBitmap gb;
         if(findCharInFont(*current, gb)) {
-            if (gb.getGlyph()->height > height) height = gb.getGlyph()->height;
-            bl = gb.getGlyph()->height + gb.getGlyph()->yOffset;
+            bl += (gb.getGlyph()->height + gb.getGlyph()->yOffset);
         }
         current++;
     }
-    return bl;
+    return bl / 3;
 }
 
 void handleUtf8Drawing(void *data, uint32_t ch) {

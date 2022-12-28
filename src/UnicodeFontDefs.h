@@ -18,7 +18,8 @@ typedef uint16_t bitmap_size_t;
 #define _GFXFONT_H_
 
 /**
- * @file UnicodeFontDefs.h contains font rendering structures both for AdafruitGFX fonts and TcUnicode fonts
+ * @file UnicodeFontDefs.h
+ * @brief contains font rendering structures both for AdafruitGFX fonts and TcUnicode fonts
  */
 
 /*

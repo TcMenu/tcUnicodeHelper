@@ -4,6 +4,7 @@
 #include <SPI.h>
 #include <Wire.h>
 #include <Fonts/FreeSans12pt7b.h>
+#include <Fonts/RobotoMedium24.h>
 #include "Fonts/OpenSansCyrillicLatin18.h"
 
 #define TFT_CS   22  // Chip select control pin
@@ -22,10 +23,15 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
 //
 UnicodeFontHandler fontHandler(&tft, ENCMODE_UTF8);
 
-int yTextSize = 0;
+int yAdaFontSize = 0;
 int yOpenSansSize = 0;
+int baselineAda = 0;
+int baselineTcUni = 0;
 const char helloText[] PROGMEM = "hello world";
 const char helloUkraine[] PROGMEM = "Привіт Світ";
+
+const GFXfont* adaFontToUse = &FreeSans12pt7b;
+const UnicodeFont* unicodeFontTouse = OpenSansCyrillicLatin18;
 
 void setup() {
     // on ESP32 you may need to adjust the SPI settings, un/comment below
@@ -48,25 +54,24 @@ void setup() {
     // Get the size of the Unicode open sans font that we are using, it is returned as a Coord object that has x and y.
     // the baseline, indicates the amount of space below the drawing point that's needed.
     //
-    int baseLine = 0;
-    fontHandler.setFont(OpenSansCyrillicLatin18);
-    Coord openSansSize = fontHandler.textExtents_P(helloText, &baseLine);
-    yOpenSansSize = (int)openSansSize.y - baseLine;
+    fontHandler.setFont(unicodeFontTouse);
+    Coord openSansSize = fontHandler.textExtents_P(helloText, &baselineTcUni);
+    yOpenSansSize = (int)openSansSize.y - baselineTcUni;
 
     //
     // Now get the size of the Adafruit_GFX font that we are using, same as above basically.
     //
-    fontHandler.setFont(&FreeSans12pt7b);
-    Coord textSize = fontHandler.textExtents_P(helloText, &baseLine);
-    yTextSize = (int)textSize.y - baseLine;
+    fontHandler.setFont(adaFontToUse);
+    Coord textSize = fontHandler.textExtents_P(helloText, &baselineAda);
+    yAdaFontSize = (int)textSize.y - baselineAda;
 
     //
     // Now we print some text on the first available line, just as with adafruit, the font is drawn with reference to
     // the baseline, so we need to add the Y size of the font without the baseline. This is using a regular adafruit
     // graphics font.
     //
-    fontHandler.setCursor(0, yTextSize);
-    fontHandler.setFont(&FreeSans12pt7b);
+    fontHandler.setCursor(0, yAdaFontSize);
+    fontHandler.setFont(adaFontToUse);
     fontHandler.setDrawColor(ILI9341_WHITE);
     fontHandler.print_P(helloText);
 
@@ -74,16 +79,16 @@ void setup() {
     // Now we print some text just below that that is in unicode, this text is in cyrillic.
     //
     fontHandler.setCursor(0, 30 + yOpenSansSize);
-    fontHandler.setFont(OpenSansCyrillicLatin18);
+    fontHandler.setFont(unicodeFontTouse);
     fontHandler.print_P(helloUkraine);
 
     //
     // Now we print the X and Y sizes of the adafruit font
     //
-    fontHandler.setCursor(0, yTextSize + 60);
-    fontHandler.setFont(&FreeSans12pt7b);
+    fontHandler.setCursor(0, yAdaFontSize + 60);
+    fontHandler.setFont(adaFontToUse);
     fontHandler.print((int)textSize.x);
-    fontHandler.setCursor(80, yTextSize + 60);
+    fontHandler.setCursor(80, yAdaFontSize + 60);
     fontHandler.print((int)textSize.y);
 }
 
@@ -91,14 +96,18 @@ void loop() {
     int whereY = 100;
     delay(250);
     tft.fillRect(0, whereY, tft.width(), 30, ILI9341_BLACK);
+    tft.fillRect(0, whereY + yAdaFontSize, 70, baselineAda, ILI9341_RED);
 
-    tft.setCursor(0, yTextSize + whereY);
-    fontHandler.setFont(&FreeSans12pt7b);
+    fontHandler.setCursor(0, yAdaFontSize + whereY);
+    fontHandler.setFont(adaFontToUse);
     fontHandler.setDrawColor(ILI9341_CYAN);
-    fontHandler.print(millis());
+    fontHandler.print(millis() / 1000);
+    fontHandler.print("Agy");
 
-    tft.setCursor(80, yOpenSansSize + whereY);
-    fontHandler.setFont(OpenSansCyrillicLatin18);
+    tft.fillRect(80, whereY + yOpenSansSize, 200, baselineTcUni, ILI9341_RED);
+    fontHandler.setCursor(80, yOpenSansSize + whereY);
+    fontHandler.setFont(unicodeFontTouse);
     fontHandler.setDrawColor(ILI9341_GREEN);
     fontHandler.print((float)millis() / 1000.0F);
+    fontHandler.print("Agy");
 }
