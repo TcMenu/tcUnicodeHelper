@@ -198,6 +198,7 @@ private:
     bool fontAdafruit = false;
     HandlerMode handlerMode = HANDLER_DRAWING_TEXT;
     uint16_t xExtentCurrent = 0;
+    int16_t calculatedBaseline = -1;
     uint32_t drawColor = 0;
 public:
     explicit UnicodeFontHandler(TextPlotPipeline *plotter, tccore::UnicodeEncodingMode mode) : utf8(handleUtf8Drawing, this, mode),
@@ -251,6 +252,7 @@ public:
     void setFont(const UnicodeFont *font) {
         unicodeFont = font;
         fontAdafruit = false;
+        calculatedBaseline = -1;
     }
 
     /**
@@ -260,6 +262,7 @@ public:
     void setFont(const GFXfont *font) {
         adaFont = font;
         fontAdafruit = true;
+        calculatedBaseline = -1;
     }
 
     /**

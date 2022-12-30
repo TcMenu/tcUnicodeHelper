@@ -3,7 +3,6 @@
 #include <Adafruit_ILI9341.h>
 #include <SPI.h>
 #include <Wire.h>
-#include <Fonts/FreeSans12pt7b.h>
 #include <Fonts/RobotoMedium24.h>
 #include "Fonts/OpenSansCyrillicLatin18.h"
 
@@ -30,7 +29,7 @@ int baselineTcUni = 0;
 const char helloText[] PROGMEM = "hello world";
 const char helloUkraine[] PROGMEM = "Привіт Світ";
 
-const GFXfont* adaFontToUse = &FreeSans12pt7b;
+const GFXfont* adaFontToUse = &RobotoMedium24;
 const UnicodeFont* unicodeFontTouse = OpenSansCyrillicLatin18;
 
 void setup() {
