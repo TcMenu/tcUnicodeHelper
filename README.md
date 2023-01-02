@@ -23,6 +23,12 @@ This library provides the full implementation of TcUnicode for use in many diffe
 
 This package includes a strict asynchronous UTF8 decoder that needs very little memory to operate with, it is backed by a series of tests that ensure it is quite strict. Given the way it operates it is possible to use it with the Print interface as it can push one char at a time. Safely bailing out if a stream is interrupted midway.
 
+## Creating tcUnicode or custom Adafruit GFX fonts
+
+There is a [custom UI for creating tcUnicode and Adafruit fonts](https://www.thecoderscorner.com/products/arduino-libraries/tc-menu/using-custom-fonts-in-menu/#creating-a-unicode-or-adafruit-font-using-the-designer-ui) built into the [tcMenu Designer application](https://github.com/davetcc/tcMenu/releases) in V3.0 and above. It works by loading a font, extracting the bitmaps at a given size, and allowing user selection of the available fonts.
+
+TcUnicode is better for representing fonts with a wide range of glyphs from different Unicode groups, as each glyph stores the code, it is far more efficient at dealing with situations where only a few glyphs from each block are present.
+
 ## TextPipelines
 
 The way we've implemented the interface between primitive drawing and the Unicode handler means in future we can provide transformations, for example a rotation transformation. For now, they only provide the direct support for drawing on each display type.
