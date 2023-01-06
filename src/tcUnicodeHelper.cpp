@@ -5,9 +5,6 @@
 
 #include "tcUnicodeHelper.h"
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "UnreachableCode"
-
 Coord UnicodeFontHandler::textExtents(const char *text, int *baseline, bool progMem) {
     if(adaFont == nullptr) {
         baseline = 0;
@@ -203,5 +200,3 @@ void handleUtf8Drawing(void *data, uint32_t ch) {
     auto fontHandler = reinterpret_cast<UnicodeFontHandler *>(data);
     fontHandler->internalHandleUnicodeFont(ch);
 }
-
-#pragma clang diagnostic pop
