@@ -68,7 +68,7 @@ public:
     virtual Coord getDimensions() = 0;
 };
 
-#if __has_include (<graphics/DeviceDrawable.h>)
+#if __has_include (<graphics/DeviceDrawable.h>) || defined(TC_HARDWIRE_TCMENU_RENDER)
 #include <graphics/DeviceDrawable.h>
 #define UNICODE_TCMENU_GRAPHIC_DEVICE_AVAILABLE
 class DrawableTextPlotPipeline : public TextPlotPipeline {
@@ -87,7 +87,7 @@ public:
 };
 #endif // GraphicsDevice available
 
-#if __has_include (<U8g2lib.h>)
+#if __has_include (<U8g2lib.h>) || defined(TC_HARDWIRE_USING_U8G2)
 #include <U8g2lib.h>
 #define UNICODE_U8G2_AVAILABLE
 class U8g2TextPlotPipeline : public TextPlotPipeline {
@@ -104,7 +104,7 @@ public:
 };
 #endif // u8g2 included
 
-#if __has_include (<Adafruit_GFX.h>)
+#if __has_include (<Adafruit_GFX.h>) || defined(TC_HARDWIRE_USING_ADAGFX)
 #include <Adafruit_GFX.h>
 #define UNICODE_ADAGFX_AVAILABLE
 class AdafruitTextPlotPipeline : public TextPlotPipeline {
@@ -121,7 +121,7 @@ public:
 };
 #endif // Adafruit included
 
-#if __has_include (<TFT_eSPI.h>)
+#if __has_include (<TFT_eSPI.h>) || defined(TC_HARDWIRE_USING_TFT_ESPI)
 #include <TFT_eSPI.h>
 #define UNICODE_TFT_ESPI_AVAILABLE
 class TftSpiTextPlotPipeline : public TextPlotPipeline {
@@ -174,7 +174,7 @@ public:
 
 void handleUtf8Drawing(void *userData, uint32_t ch);
 
-#if __has_include (<Print.h>)
+#if __has_include (<Print.h>) || defined(ARDUINO_SAM_DUE)
 #include <Print.h>
 class UnicodeFontHandler : public Print {
 #elif __has_include(<PrintCompat.h>)
