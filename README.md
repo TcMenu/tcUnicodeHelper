@@ -43,10 +43,17 @@ Please raise all questions in the main TcMenu repository discussions.
 
 ## Special notes for Arduino DUE
 
-The due compiler does not support `has_include` and therefore we cannot automatically determine what libraries are available to you. For Due you need to do this manually before including tcUnicode. Here is an example:
+The due compiler does not support `has_include` and therefore we cannot automatically determine what libraries are available to you. For Due you need to do this manually before including tcUnicode (or anything else that may include it). Here is an example:
 
     #define TC_HARDWIRE_USING_ADAGFX
     #include <tcUnicodeHelper.h>
+
+Here is the full list of options to manually hard-wire a library to be available
+
+* `TC_HARDWIRE_USING_ADAGFX` - to indicate Adafruit_GFX library is available
+* `TC_HARDWIRE_USING_U8G2` - to indicate U8G2 library is available
+* `TC_HARDWIRE_USING_TFT_ESPI` - to indicate TFT_eSPI library is available
+* `TC_HARDWIRE_TCMENU_RENDER` - to indicate tcMenu library is available
 
 As far as we know every other board we have tested with is able to automatically detect. However, if you come across another board that does not support `has_include` please raise an issue here and try applying the above technique. 
 

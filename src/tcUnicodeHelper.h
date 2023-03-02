@@ -69,7 +69,7 @@ public:
 };
 
 #if __has_include (<graphics/DeviceDrawable.h>) || __has_include (<graphics/GraphicsDeviceRenderer.h>) || defined(TC_HARDWIRE_TCMENU_RENDER)
-#if __has_include (<graphics/DeviceDrawable.h>)
+#if __has_include (<graphics/DeviceDrawable.h>) || defined(TC_HARDWIRE_TCMENU_RENDER)
 # include <graphics/DeviceDrawable.h>
 #else
 # include <graphics/GraphicsDeviceRenderer.h>
