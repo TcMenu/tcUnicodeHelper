@@ -68,8 +68,12 @@ public:
     virtual Coord getDimensions() = 0;
 };
 
-#if __has_include (<graphics/DeviceDrawable.h>) || defined(TC_HARDWIRE_TCMENU_RENDER)
-#include <graphics/DeviceDrawable.h>
+#if __has_include (<graphics/DeviceDrawable.h>) || __has_include (<graphics/GraphicsDeviceRenderer.h>) || defined(TC_HARDWIRE_TCMENU_RENDER)
+#if __has_include (<graphics/DeviceDrawable.h>)
+# include <graphics/DeviceDrawable.h>
+#else
+# include <graphics/GraphicsDeviceRenderer.h>
+#endif
 #define UNICODE_TCMENU_GRAPHIC_DEVICE_AVAILABLE
 class DrawableTextPlotPipeline : public TextPlotPipeline {
 private:
