@@ -41,6 +41,15 @@ There is a custom dialog within "TcMenu Designer UI" where you can select the Un
 
 Please raise all questions in the main TcMenu repository discussions.
 
+## Special notes for Arduino DUE
+
+The due compiler does not support `has_include` and therefore we cannot automatically determine what libraries are available to you. For Due you need to do this manually before including tcUnicode. Here is an example:
+
+    #define TC_HARDWIRE_USING_ADAGFX
+    #include <tcUnicodeHelper.h>
+
+As far as we know every other board we have tested with is able to automatically detect. However, if you come across another board that does not support `has_include` please raise an issue here and try applying the above technique. 
+
 ## Questions and documentation
 
 You can ask questions either in the [discussions section of the tcMenu repo](https://github.com/davetcc/tcMenu/discussions), or using the Arduino forum. We generally answer most questions, but the rules of engagement are: **this is my hobby, I make it available because it helps others**. Don't expect immediate answers, make sure you've recreated the problem in a simple sketch that you can send to me. Please consider making at least a one time donation using the sponsor link if we do help you out.
