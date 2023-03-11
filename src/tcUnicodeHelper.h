@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2018 https://www.thecoderscorner.com (Dave Cherry).
+ * This product is licensed under an Apache license, see the LICENSE file in the top-level directory.
+ */
 
 #ifndef TC_UNICODE_FONTHELPER_H
 #define TC_UNICODE_FONTHELPER_H
@@ -6,6 +10,8 @@
 #include <inttypes.h>
 #include "Utf8TextProcessor.h"
 #include "UnicodeFontDefs.h"
+
+#define TCUNICODE_API_VERSION 2
 
 #if !defined(pgm_read_dword) && defined(__MBED__)
 #define pgm_read_byte(addr) (*(const unsigned char *)(addr))
@@ -59,88 +65,36 @@ namespace tcgfx {
 
 using namespace tcgfx;
 
+/**
+ * A plot pipeline takes care of actually drawing the font glyphs in terms of pixels and cursor positions, it allows
+ * for independent implementation on many different graphics libraries. There are ready made implementation for U8G2,
+ * Adafruit_GFX, tcMenu Drawable and TFT_eSPI. Should you wish to create one for another display, follow one of the
+ * example device includes such as `tcUnicodeU8G2.h`.
+ */
 class TextPlotPipeline {
 public:
     virtual ~TextPlotPipeline() = default;
+    /**
+     * Draw a pixel onto the device at the given coordinates
+     * @param x the x position increases left to right
+     * @param y the y position increases top to bottom
+     * @param color the color in whatever format the device uses
+     */
     virtual void drawPixel(uint16_t x, uint16_t y, uint32_t color) = 0;
+    /**
+     * Set the position that the next text will be printed at, handling of offscreen is minimal, and just stops rendering
+     * @param where the coordinate to draw at
+     */
     virtual void setCursor(const Coord& where) = 0;
+    /**
+     * @return the current coordinates for print
+     */
     virtual Coord getCursor() = 0;
+    /**
+     * @return the dimensions of the underlying display object
+     */
     virtual Coord getDimensions() = 0;
 };
-
-#if __has_include (<graphics/DeviceDrawable.h>) || __has_include (<graphics/GraphicsDeviceRenderer.h>) || defined(TC_HARDWIRE_TCMENU_RENDER)
-#if __has_include (<graphics/DeviceDrawable.h>) || defined(TC_HARDWIRE_TCMENU_RENDER)
-# include <graphics/DeviceDrawable.h>
-#else
-# include <graphics/GraphicsDeviceRenderer.h>
-#endif
-#define UNICODE_TCMENU_GRAPHIC_DEVICE_AVAILABLE
-class DrawableTextPlotPipeline : public TextPlotPipeline {
-private:
-    tcgfx::DeviceDrawable *drawable;
-    Coord cursor;
-public:
-    explicit DrawableTextPlotPipeline(tcgfx::DeviceDrawable *drawable) : drawable(drawable) {}
-    void drawPixel(uint16_t x, uint16_t y, uint32_t color) override {
-        drawable->setDrawColor(color);
-        drawable->drawPixel(x, y);
-    }
-    void setCursor(const Coord& where) override { cursor = where; }
-    Coord getCursor() override { return cursor; }
-    Coord getDimensions() override { return drawable->getDisplayDimensions(); }
-};
-#endif // GraphicsDevice available
-
-#if __has_include (<U8g2lib.h>) || defined(TC_HARDWIRE_USING_U8G2)
-#include <U8g2lib.h>
-#define UNICODE_U8G2_AVAILABLE
-class U8g2TextPlotPipeline : public TextPlotPipeline {
-private:
-    U8G2* u8g2;
-    Coord cursor;
-public:
-    explicit U8g2TextPlotPipeline(U8G2* gfx): u8g2(gfx) {}
-    ~U8g2TextPlotPipeline() = default;
-    void drawPixel(uint16_t x, uint16_t y, uint32_t color) override { u8g2->setColorIndex(color); u8g2->drawPixel(x, y); }
-    Coord getDimensions() override {  return Coord(u8g2->getWidth(), u8g2->getHeight()); }
-    void setCursor(const Coord& where) override { cursor = where; }
-    Coord getCursor() override { return cursor; }
-};
-#endif // u8g2 included
-
-#if __has_include (<Adafruit_GFX.h>) || defined(TC_HARDWIRE_USING_ADAGFX)
-#include <Adafruit_GFX.h>
-#define UNICODE_ADAGFX_AVAILABLE
-class AdafruitTextPlotPipeline : public TextPlotPipeline {
-private:
-    Adafruit_GFX *gfx;
-public:
-    explicit AdafruitTextPlotPipeline(Adafruit_GFX *gfx) : gfx(gfx) {
-    }
-    ~AdafruitTextPlotPipeline() = default;
-    void drawPixel(uint16_t x, uint16_t y, uint32_t dc) override { return gfx->drawPixel(x, y, dc); }
-    void setCursor(const Coord &where) override { gfx->setCursor(where.x, where.y); }
-    Coord getCursor() override {return Coord(gfx->getCursorX(), gfx->getCursorY()); }
-    Coord getDimensions() override { return Coord(gfx->width(), gfx->height());}
-};
-#endif // Adafruit included
-
-#if __has_include (<TFT_eSPI.h>) || defined(TC_HARDWIRE_USING_TFT_ESPI)
-#include <TFT_eSPI.h>
-#define UNICODE_TFT_ESPI_AVAILABLE
-class TftSpiTextPlotPipeline : public TextPlotPipeline {
-private:
-    TFT_eSPI* tft;
-    Coord cursor;
-public:
-    TftSpiTextPlotPipeline(TFT_eSPI* tft) : tft(tft) {}
-    ~TftSpiTextPlotPipeline()=default;
-    void drawPixel(uint16_t x, uint16_t y, uint32_t dc) override { return tft->drawPixel(x, y, dc); }
-    Coord getDimensions() override { return Coord(tft->width(), tft->height());}
-    void setCursor(const Coord& where) override { cursor = where; }
-    Coord getCursor() override { return cursor; }
-};
-#endif // TFT_eSPI included
 
 #define TC_UNICODE_CHAR_ERROR 0xffffffff
 
@@ -205,36 +159,20 @@ private:
     int16_t calculatedBaseline = -1;
     uint32_t drawColor = 0;
 public:
+    /**
+     * Create a UnicodeFontHandler with a given pipeline, the pipeline interfaces with the underlying library and provides
+     * the drawing support. It is the minimum possible code to draw text. It also takes an encoding mode which is passed
+     * to the underlying UTF-8 encoder, either `ENCMODE_UTF8` or `ENCMODE_EXT_ASCII`. This object will not delete the
+     * underlying plotter that you pass in, you must do that yourself if this object is not global in scope. See the examples
+     * for more details on usage with libraries.
+     *
+     * @param plotter the pipeline plotter pointer
+     * @param mode the encoding mode
+     */
     explicit UnicodeFontHandler(TextPlotPipeline *plotter, tccore::UnicodeEncodingMode mode) : utf8(handleUtf8Drawing, this, mode),
                                                                                                plotter(plotter),
                                                                                                unicodeFont(nullptr) {}
     virtual ~UnicodeFontHandler() = default;
-
-#ifdef UNICODE_TCMENU_GRAPHIC_DEVICE_AVAILABLE
-    explicit UnicodeFontHandler(DeviceDrawable *gfx, tccore::UnicodeEncodingMode mode) : utf8(handleUtf8Drawing, this, mode),
-                                                                                         unicodeFont(nullptr) {
-        plotter = new DrawableTextPlotPipeline(gfx);
-    }
-#endif
-
-#ifdef UNICODE_ADAGFX_AVAILABLE
-    explicit UnicodeFontHandler(Adafruit_GFX *gfx, tccore::UnicodeEncodingMode mode) : utf8(handleUtf8Drawing, this, mode),
-                                                                                       unicodeFont(nullptr) {
-        plotter = new AdafruitTextPlotPipeline(gfx);
-    }
-#endif
-
-#ifdef UNICODE_TFT_ESPI_AVAILABLE
-    explicit UnicodeFontHandler(TFT_eSPI* gfx, tccore::UnicodeEncodingMode mode): utf8(handleUtf8Drawing, this, mode), unicodeFont(nullptr) {
-        plotter = new TftSpiTextPlotPipeline(gfx);
-    }
-#endif
-
-#ifdef UNICODE_U8G2_AVAILABLE
-    explicit UnicodeFontHandler(U8G2* gfx, tccore::UnicodeEncodingMode mode): utf8(handleUtf8Drawing, this, mode), unicodeFont(nullptr) {
-        plotter = new U8g2TextPlotPipeline(gfx);
-    }
-#endif
 
     /**
      * Plotter pipelines allow the rendering of fonts to be customized to a greater extent, for example a transformation
