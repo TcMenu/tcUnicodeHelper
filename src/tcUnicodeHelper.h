@@ -13,7 +13,7 @@
 
 #define TCUNICODE_API_VERSION 2
 
-#if !defined(pgm_read_dword) && defined(__MBED__)
+#if !defined(pgm_read_dword) && (defined(__MBED__) || defined(BUILD_FOR_PICO_CMAKE))
 #define pgm_read_byte(addr) (*(const unsigned char *)(addr))
 #define pgm_read_word(addr) (*(const unsigned short *)(addr))
 #define pgm_read_dword(addr) (*(const unsigned long *)(addr))
@@ -252,7 +252,7 @@ public:
     */
     Coord textExtents_P(const char *text, int *baseline) { return textExtents(text, baseline, true); }
 
-#ifndef __MBED__
+#if !defined(__MBED__) && !defined(BUILD_FOR_PICO_CMAKE)
 
     /**
     * Get the extents of the text provided in UTF8 as a flash based string using the F() macro
