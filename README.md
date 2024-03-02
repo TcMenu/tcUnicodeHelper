@@ -6,6 +6,8 @@ TcUnicode provides Unicode character support to a wide range of display librarie
 
 Dave Cherry / TheCodersCorner.com made this framework available for you to use. It takes me significant effort to keep all my libraries current and working on a wide range of boards. Please consider making at least a one off donation via the sponsor button if you find it useful.
 
+<a href="https://www.buymeacoffee.com/davetcc" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
 In any fork, please ensure all text up to here is left unaltered.
 
 ## Why this library and this format?
