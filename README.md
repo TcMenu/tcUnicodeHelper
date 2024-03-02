@@ -48,7 +48,9 @@ The included fonts are separately licenced [Font licence page](src/Fonts/font-li
 
 ## Questions and documentation
 
-You can ask questions either in the [discussions section of the tcMenu repo](https://github.com/davetcc/tcMenu/discussions), or using the Arduino forum. We generally answer most questions, but the rules of engagement are: **this is my hobby, I make it available because it helps others**. Don't expect immediate answers, make sure you've recreated the problem in a simple sketch that you can send to me. Please consider making at least a one time donation using the sponsor link if we do help you out.
+TheCodersCorner.com invest a lot of time and resources into making this open source product which is used by literally thousands of users. We offer both [commercial support](https://www.thecoderscorner.com/support-services/training-support/) and [C++/Java/Dart consultancy](https://www.thecoderscorner.com/support-services/consultancy/), or if you just want to say thanks, you can also make a donation via [GitHub](https://github.com/davetcc/tcMenu) (this repository). 
+
+<a href="https://www.buymeacoffee.com/davetcc" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 * [UTF-8 decoder and Unicode font documentation on TheCodersCorner.com](https://www.thecoderscorner.com/products/arduino-libraries/tc-unicode-helper/)
 * [discussions section of the tcMenu repo](https://github.com/davetcc/tcMenu/discussions) of tcmenu git repo
