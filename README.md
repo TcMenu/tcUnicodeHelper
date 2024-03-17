@@ -10,14 +10,14 @@ Dave Cherry / TheCodersCorner.com made this framework available for you to use. 
 
 In any fork, please ensure all text up to here is left unaltered.
 
-## Why this library and this format?
+## What is this library and this format?
 
-This format and library were originally devised as part of the tcMenu project specifically for mbed boards, I thought the format to be very useful, enough to make open to all. It provides a very extensible unicode format that works across many libraries and boards.
+This library allows you to use Adafruit and TcUnicode fonts with a wide variety of different drawing libraries, without needing any alteration to that library. Importantly, this means you can use Unicode with any Adafruit GFX based library, TcMenu Drawable, U8G2 and TFT_eSPI   
 
-This library provides the full implementation of TcUnicode for use in many different environments that are listed below.
+This format and library has now been around for a while and has been battle tested in TcMenu. It provides a very extensible unicode format that works across many libraries and boards. Currently supported on:
 
-* For TcMenu Device Drawable - the designer supports this format natively.
-* Most Adafruit_GFX libraries - see the packaged Adafruit example.
+* TcMenu Device Drawable - the designer supports this format natively.
+* Any Adafruit_GFX compatible library - see the packaged Adafruit example.
 * U8G2 library - although the library has good Unicode support, this is another option. See the packaged example.
 * TFT_eSPI - although the library has good Unicode support, this is another option. See the packaged example.
 
@@ -25,11 +25,13 @@ This library provides the full implementation of TcUnicode for use in many diffe
 
 This package includes a strict asynchronous UTF8 decoder that needs very little memory to operate with, it is backed by a series of tests that ensure it is quite strict. Given the way it operates it is possible to use it with the Print interface as it can push one char at a time. Safely bailing out if a stream is interrupted midway.
 
-## Creating tcUnicode or custom Adafruit GFX fonts
+## Creating your own tcUnicode or Adafruit GFX fonts
 
-There is a [custom UI for creating tcUnicode and Adafruit fonts](https://www.thecoderscorner.com/products/arduino-libraries/tc-menu/using-custom-fonts-in-menu/#creating-a-unicode-or-adafruit-font-using-the-designer-ui) built into the [tcMenu Designer application](https://github.com/davetcc/tcMenu/releases) in V3.0 and above. It works by loading a font, extracting the bitmaps at a given size, and allowing user selection of the available fonts.
+[TcMenu Designer can create tcUnicode and Adafruit fonts](https://www.thecoderscorner.com/products/arduino-libraries/tc-menu/using-custom-fonts-in-menu/#creating-a-unicode-or-adafruit-font-using-the-designer-ui) built into the [tcMenu Designer application](https://github.com/davetcc/tcMenu/releases). As of Designer 4.3 the bitmap font generator has been substantially improved and produces very high quality font exports, even at very small sizes and includes a bitmap editor to touch up any erring pixels.
 
-TcUnicode is better for representing fonts with a wide range of glyphs from different Unicode groups, as each glyph stores the code, it is far more efficient at dealing with situations where only a few glyphs from each block are present.
+If someone from the U8G2 and TFT_eSPI teams help us, we'll make it possible to generate U8G2 and TFT_eSPI bitmap fonts from there too. 
+
+TcUnicode represents fonts with a wide range of glyphs from different Unicode groups efficiently, if you've got large gaps between ranges, TcUnicode is more efficient than AdaFruit format.
 
 ## TextPipelines
 
