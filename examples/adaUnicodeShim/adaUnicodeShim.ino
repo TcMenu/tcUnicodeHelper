@@ -3,7 +3,7 @@
 #include <Adafruit_ILI9341.h>
 #include <SPI.h>
 #include <Wire.h>
-#include <Fonts/RobotoMedium24.h>
+#include <Fonts/RobotoMedium18.h>
 #include "Fonts/OpenSansCyrillicLatin18.h"
 
 #define TFT_CS   22  // Chip select control pin
@@ -15,12 +15,13 @@
 // It also works with TcMenu drawable interface and the designer can generate suitable themes.
 //
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
+AdafruitTextPlotPipeline tftPipeline(&tft);
 
 //
 // Create an object that can draw fonts onto the display, this shows adafruit but
 // if using U8G2 or TFT_eSPI you'd simply pass the pointer to your display object instead.
 //
-UnicodeFontHandler fontHandler(&tft, ENCMODE_UTF8);
+UnicodeFontHandler fontHandler(&tftPipeline, ENCMODE_UTF8);
 
 int yAdaFontSize = 0;
 int yOpenSansSize = 0;
@@ -29,12 +30,13 @@ int baselineTcUni = 0;
 const char helloText[] PROGMEM = "hello world";
 const char helloUkraine[] PROGMEM = "Привіт Світ";
 
-const GFXfont* adaFontToUse = &RobotoMedium24;
+const GFXfont* adaFontToUse = &RobotoMedium18pt;
 const UnicodeFont* unicodeFontTouse = OpenSansCyrillicLatin18;
 
 void setup() {
     // on ESP32 you may need to adjust the SPI settings, un/comment below
-    SPI.begin(18, 19, 23);
+    // SPI.begin(18, 19, 23);
+    SPI.begin();
 
     // On Pico, you may need to set up the SPI pins, un/comment below
     //SPI.setSCK(2);
