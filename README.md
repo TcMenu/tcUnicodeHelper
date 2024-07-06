@@ -1,4 +1,9 @@
 # TcUnicode support for Adafruit_GFX, U8G2, TFT_eSPI, tcMenu.
+[![PlatformIO](https://github.com/davetcc/tcUnicodeHelper/actions/workflows/platformio.yml/badge.svg)](https://github.com/davetcc/tcUnicodeHelper/actions/workflows/platformio.yml)
+[![License: Apache 2.0](https://img.shields.io/badge/license-Apache--2.0-green.svg)](https://github.com/davetcc/tcUnicodeHelper/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/davetcc/tcUnicodeHelper.svg?maxAge=3600)](https://github.com/davetcc/tcUnicodeHelper/releases)
+[![davetcc](https://img.shields.io/badge/davetcc-dev-blue.svg)](https://github.com/davetcc)
+[![JSC electronics](https://img.shields.io/badge/JSC-electronics-green.svg)](https://github.com/jsc-electronics)
 
 ## Summary
 

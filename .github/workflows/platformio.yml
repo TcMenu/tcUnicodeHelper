@@ -1,0 +1,47 @@
+name: PlatformIO CI
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        example:
+          - examples/utf8decoder/utf8decoder.ino
+        include:
+          # ESP
+          - example: examples/adaUnicodeShim/adaUnicodeShim.ino
+            board: [esp32dev, esp01_1m]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.platformio/.cache
+          key: ${{ runner.os }}-pio
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install PlatformIO Core
+        run: pip install --upgrade platformio
+      - name: Set Board Environment Variables
+        run: |
+          if [ -n "${{ matrix.board }}" ] && [ "${{ matrix.board }}" != "null" ]; then
+            BOARD_ENVS=""
+            if [ "${{ matrix.board }}" = "Array" ]; then
+              # If matrix.board is an array
+              for board in $(echo '${{ toJSON(matrix.board) }}' | jq -r '.[]'); do
+                BOARD_ENVS="$BOARD_ENVS --environment $board"
+              done
+            else
+              # If matrix.board is a single value
+              BOARD_ENVS="--environment ${{ matrix.board }}"
+            fi
+            echo "BOARD_ENVS=$BOARD_ENVS" >> $GITHUB_ENV
+          fi
+        shell: bash
+      - name: Build PlatformIO examples
+        run: pio ci --lib "." --project-conf=platformio.ini $BOARD_ENVS
+        env:
+          PLATFORMIO_CI_SRC: ${{ matrix.example }}
