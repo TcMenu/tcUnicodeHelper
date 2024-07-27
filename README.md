@@ -1,9 +1,9 @@
 # TcUnicode support for Adafruit_GFX, U8G2, TFT_eSPI, tcMenu.
-[![PlatformIO](https://github.com/davetcc/tcUnicodeHelper/actions/workflows/platformio.yml/badge.svg)](https://github.com/davetcc/tcUnicodeHelper/actions/workflows/platformio.yml)
-[![License: Apache 2.0](https://img.shields.io/badge/license-Apache--2.0-green.svg)](https://github.com/davetcc/tcUnicodeHelper/blob/master/LICENSE)
-[![GitHub release](https://img.shields.io/github/release/davetcc/tcUnicodeHelper.svg?maxAge=3600)](https://github.com/davetcc/tcUnicodeHelper/releases)
+[![PlatformIO](https://github.com/TcMenu/tcUnicodeHelper/actions/workflows/platformio.yml/badge.svg)](https://github.com/TcMenu/tcUnicodeHelper/actions/workflows/platformio.yml)
+[![License: Apache 2.0](https://img.shields.io/badge/license-Apache--2.0-green.svg)](https://github.com/TcMenu/tcUnicodeHelper/blob/main/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/TcMenu/tcUnicodeHelper.svg?maxAge=3600)](https://github.com/TcMenu/tcUnicodeHelper/releases)
 [![davetcc](https://img.shields.io/badge/davetcc-dev-blue.svg)](https://github.com/davetcc)
-[![JSC electronics](https://img.shields.io/badge/JSC-electronics-green.svg)](https://github.com/jsc-electronics)
+[![JSC TechMinds](https://img.shields.io/badge/JSC-TechMinds-green.svg)](https://www.jsctm.cz)
 
 ## Summary
 
@@ -32,7 +32,7 @@ This package includes a strict asynchronous UTF8 decoder that needs very little 
 
 ## Creating your own tcUnicode or Adafruit GFX fonts
 
-[TcMenu Designer can create tcUnicode and Adafruit fonts](https://www.thecoderscorner.com/products/arduino-libraries/tc-menu/using-custom-fonts-in-menu/#creating-a-unicode-or-adafruit-font-using-the-designer-ui) built into the [tcMenu Designer application](https://github.com/davetcc/tcMenu/releases). As of Designer 4.3 the bitmap font generator has been substantially improved and produces very high quality font exports, even at very small sizes and includes a bitmap editor to touch up any erring pixels.
+[TcMenu Designer can create tcUnicode and Adafruit fonts](https://www.thecoderscorner.com/products/arduino-libraries/tc-menu/using-custom-fonts-in-menu/#creating-a-unicode-or-adafruit-font-using-the-designer-ui) built into the [tcMenu Designer application](https://github.com/TcMenu/tcMenu/releases). As of Designer 4.3 the bitmap font generator has been substantially improved and produces very high quality font exports, even at very small sizes and includes a bitmap editor to touch up any erring pixels.
 
 If someone from the U8G2 and TFT_eSPI teams help us, we'll make it possible to generate U8G2 and TFT_eSPI bitmap fonts from there too. 
 
@@ -57,12 +57,12 @@ The included fonts are separately licenced [Font licence page](src/Fonts/font-li
 
 ## Questions and documentation
 
-TheCodersCorner.com invest a lot of time and resources into making this open source product which is used by literally thousands of users. We offer both [commercial support](https://www.thecoderscorner.com/support-services/training-support/) and [C++/Java/Dart consultancy](https://www.thecoderscorner.com/support-services/consultancy/), or if you just want to say thanks, you can also make a donation via [GitHub](https://github.com/davetcc/tcMenu) (this repository). 
+TheCodersCorner.com invest a lot of time and resources into making this open source product which is used by literally thousands of users. We offer both [commercial support](https://www.thecoderscorner.com/support-services/training-support/) and [C++/Java/Dart consultancy](https://www.thecoderscorner.com/support-services/consultancy/), or if you just want to say thanks, you can also make a donation via [GitHub](https://github.com/TcMenu/tcMenu) (this repository). 
 
 <a href="https://www.buymeacoffee.com/davetcc" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 * [UTF-8 decoder and Unicode font documentation on TheCodersCorner.com](https://www.thecoderscorner.com/products/arduino-libraries/tc-unicode-helper/)
-* [discussions section of the tcMenu repo](https://github.com/davetcc/tcMenu/discussions) of tcmenu git repo
+* [discussions section of the tcMenu repo](https://github.com/TcMenu/tcMenu/discussions) of tcmenu git repo
 * [Arduino discussion forum](https://forum.arduino.cc/) where questions can be asked, please tag me using `@davetcc`.
 * [Legacy discussion forum probably to be made read only soon](https://www.thecoderscorner.com/jforum/).
 
