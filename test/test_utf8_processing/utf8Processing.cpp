@@ -31,7 +31,7 @@ uint32_t getFromBufferOrError() {
     }
 }
 
-void test_Utf8EncoderAscii() {
+void testUtf8EncoderAscii() {
     tccore::Utf8TextProcessor textProcessor(textHandler, nullptr, tccore::ENCMODE_EXT_ASCII);
     textProcessor.pushChars("Hello");
     // force extended ascii processing!
@@ -48,7 +48,7 @@ void test_Utf8EncoderAscii() {
     TEST_ASSERT_FALSE(!unicodeChars.empty());
 }
 
-void test_Utf8EncoderUnicodeCodesDirect() {
+void testUtf8EncoderUnicodeCodesDirect() {
     tccore::Utf8TextProcessor textProcessor(textHandler, nullptr, tccore::ENCMODE_UTF8);
 
     textProcessor.pushChar((char)0b00100100);
@@ -67,7 +67,7 @@ void test_Utf8EncoderUnicodeCodesDirect() {
     TEST_ASSERT_FALSE(!unicodeChars.empty());
 }
 
-void test_Utf8EncoderUnicodeBasicCase() {
+void testUtf8EncoderUnicodeBasicCase() {
     tccore::Utf8TextProcessor textProcessor(textHandler, nullptr, tccore::ENCMODE_UTF8);
     textProcessor.pushChars("Hello");
 
@@ -79,7 +79,7 @@ void test_Utf8EncoderUnicodeBasicCase() {
     TEST_ASSERT_FALSE(!unicodeChars.empty());
 }
 
-void test_Utf8EncoderUnicodeMulti() {
+void testUtf8EncoderUnicodeMulti() {
     tccore::Utf8TextProcessor textProcessor(textHandler, nullptr, tccore::ENCMODE_UTF8);
     textProcessor.pushChars("Світ"); // \xD0\xA1\xD0\xB2\xD1\x96\xD1\x82
 
@@ -90,7 +90,7 @@ void test_Utf8EncoderUnicodeMulti() {
     TEST_ASSERT_FALSE(!unicodeChars.empty());
 }
 
-void test_Utf8EncoderUnicodeOverlongNull() {
+void testUtf8EncoderUnicodeOverlongNull() {
     tccore::Utf8TextProcessor textProcessor(textHandler, nullptr, tccore::ENCMODE_UTF8);
     textProcessor.pushChar((char)0xc0);
     textProcessor.pushChar((char)0x80);
@@ -113,7 +113,7 @@ void test_Utf8EncoderUnicodeOverlongNull() {
     TEST_ASSERT_FALSE(!unicodeChars.empty());
 }
 
-void test_BrokenSequenceContinueAsAscii() {
+void testBrokenSequenceContinueAsAscii() {
     tccore::Utf8TextProcessor textProcessor(textHandler, nullptr, tccore::ENCMODE_UTF8);
     textProcessor.pushChar((char)0xc3);
     textProcessor.pushChar((char)'H');
@@ -156,7 +156,7 @@ void test_BrokenSequenceContinueAsAscii() {
     TEST_ASSERT_EQUAL_UINT32(0x0421, getFromBufferOrError());
 }
 
-void test_invalidBytesNotProcessed() {
+void testinvalidBytesNotProcessed() {
     tccore::Utf8TextProcessor textProcessor(textHandler, nullptr, tccore::ENCMODE_UTF8);
     textProcessor.pushChar((char)0xff);
     TEST_ASSERT_EQUAL_UINT32(TC_UNICODE_CHAR_ERROR, getFromBufferOrError());
@@ -168,7 +168,7 @@ void test_invalidBytesNotProcessed() {
     TEST_ASSERT_FALSE(!unicodeChars.empty());
 }
 
-void test_Utf8EncoderUnicodeOverlongSlash() {
+void testUtf8EncoderUnicodeOverlongSlash() {
     tccore::Utf8TextProcessor textProcessor(textHandler, nullptr, tccore::ENCMODE_UTF8);
     textProcessor.pushChar((char)0xc0);
     textProcessor.pushChar((char)0xAF);
@@ -191,7 +191,7 @@ void test_Utf8EncoderUnicodeOverlongSlash() {
     TEST_ASSERT_FALSE(!unicodeChars.empty());
 }
 
-void test_Utf8EncoderReallyLargeCodes() {
+void testUtf8EncoderReallyLargeCodes() {
     tccore::Utf8TextProcessor textProcessor(textHandler, nullptr, tccore::ENCMODE_UTF8);
     textProcessor.pushChars("ﬓﬔﬕﬖ");
     // force extended ascii processing!
@@ -205,15 +205,15 @@ void test_Utf8EncoderReallyLargeCodes() {
 
 void setup() {
     UNITY_BEGIN();
-    RUN_TEST(test_Utf8EncoderAscii);
-    RUN_TEST(test_Utf8EncoderUnicodeCodesDirect);
-    RUN_TEST(test_Utf8EncoderUnicodeBasicCase);
-    RUN_TEST(test_Utf8EncoderUnicodeMulti);
-    RUN_TEST(test_Utf8EncoderUnicodeOverlongNull);
-    RUN_TEST(test_BrokenSequenceContinueAsAscii);
-    RUN_TEST(test_invalidBytesNotProcessed);
-    RUN_TEST(test_Utf8EncoderUnicodeOverlongSlash);
-    RUN_TEST(test_Utf8EncoderReallyLargeCodes);
+    RUN_TEST(testUtf8EncoderAscii);
+    RUN_TEST(testUtf8EncoderUnicodeCodesDirect);
+    RUN_TEST(testUtf8EncoderUnicodeBasicCase);
+    RUN_TEST(testUtf8EncoderUnicodeMulti);
+    RUN_TEST(testUtf8EncoderUnicodeOverlongNull);
+    RUN_TEST(testBrokenSequenceContinueAsAscii);
+    RUN_TEST(testinvalidBytesNotProcessed);
+    RUN_TEST(testUtf8EncoderUnicodeOverlongSlash);
+    RUN_TEST(testUtf8EncoderReallyLargeCodes);
     UNITY_END();
 }
 

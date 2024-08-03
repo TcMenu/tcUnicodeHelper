@@ -86,7 +86,7 @@ bool checkGlyph(uint32_t code, uint32_t bmpOffset, int width, int height, int xA
     }
 }
 
-void test_TextExtents() {
+void testTextExtents() {
     int bl;
     handler->setFont(OpenSansCyrillicLatin18);
     Coord coord = handler->textExtents("Abc", &bl, false);
@@ -99,13 +99,13 @@ void test_TextExtents() {
     TEST_ASSERT_EQUAL_INT16(28, coord.y);
 }
 
-void test_GetGlyphOnEachRange() {
+void testGetGlyphOnEachRange() {
     TEST_ASSERT_TRUE(checkGlyph(65, 320, 11, 13, 11, 0, -18));
     TEST_ASSERT_TRUE(checkGlyph(55 + 128, 198, 2, 2, 5, 1, -12));
     TEST_ASSERT_TRUE(checkGlyph(17 + 1024, 285, 8, 13, 11, 2, -18));
 }
 
-void test_ReadingEveryGlyphInRange() {
+void testReadingEveryGlyphInRange() {
     GlyphWithBitmap glyphWithBitmap;
 
     // test all known characters work
@@ -123,7 +123,7 @@ void test_ReadingEveryGlyphInRange() {
     TEST_ASSERT_FALSE(handler->findCharInFont(0xFFFF, glyphWithBitmap));
 }
 
-void test_AdafruitFont() {
+void testAdafruitFont() {
     GlyphWithBitmap glyphWithBitmap;
     handler->setFont(RobotoMedium24pt);
 
@@ -139,10 +139,10 @@ void test_AdafruitFont() {
 
 void setup() {
     UNITY_BEGIN();
-    RUN_TEST(test_TextExtents);
-    RUN_TEST(test_GetGlyphOnEachRange);
-    RUN_TEST(test_ReadingEveryGlyphInRange);
-    RUN_TEST(test_AdafruitFont);
+    RUN_TEST(testTextExtents);
+    RUN_TEST(testGetGlyphOnEachRange);
+    RUN_TEST(testReadingEveryGlyphInRange);
+    RUN_TEST(testAdafruitFont);
     UNITY_END();
 }
 
