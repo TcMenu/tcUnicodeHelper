@@ -3,12 +3,12 @@
 // Approximate size: 11473 bytes
 // Source file:      OpenSans-Regular.ttf
 // Point size:       12pt
-// Variable name:    OpenSansRegular12pt
+// Variable name:    OpenSansCyrillicLatin12
 
 #include <UnicodeFontDefs.h>
 
 // Bitmaps for Cyrillic
-const uint8_t OpenSansRegular12ptBitmaps_8[] PROGMEM = {
+const uint8_t OpenSansCyrillicLatin12Bitmaps_8[] PROGMEM = {
 0x60,0x81,0x00,0xfe,0x08,0x20,0x83,0xf8,0x20,0x82,0x08,0x3f,0x49,0x20,0x00,0xfe,0x08,0x20,0x83,0xf8,
 0x20,0x82,0x08,0x3f,0xff,0x02,0x00,0x40,0x08,0x01,0x00,0x3f,0x84,0x18,0x81,0x10,0x22,0x04,0x41,0x88,
 0xe0,0x0c,0x21,0x00,0xfe,0x08,0x20,0x82,0x08,0x20,0x82,0x08,0x20,0x1f,0x98,0x58,0x18,0x0c,0x07,0xfb,
@@ -206,7 +206,7 @@ const uint8_t OpenSansRegular12ptBitmaps_8[] PROGMEM = {
 };
 
 // Glyphs for Cyrillic
-const UnicodeFontGlyph OpenSansRegular12ptGlyphs_8[] PROGMEM = {
+const UnicodeFontGlyph OpenSansCyrillicLatin12Glyphs_8[] PROGMEM = {
     { 0, 0, 6, 16, 9, 2, -16} /* [Ѐ] 1024*/ ,
     { 1, 12, 6, 16, 9, 2, -16} /* [Ё] 1025*/ ,
     { 2, 24, 11, 12, 12, 0, -12} /* [Ђ] 1026*/ ,
@@ -461,7 +461,7 @@ const UnicodeFontGlyph OpenSansRegular12ptGlyphs_8[] PROGMEM = {
 };
 
 // Bitmaps for Latin Extended-A
-const uint8_t OpenSansRegular12ptBitmaps_2[] PROGMEM = {
+const uint8_t OpenSansCyrillicLatin12Bitmaps_2[] PROGMEM = {
 0x1f,0x00,0x00,0x10,0x07,0x00,0xa0,0x34,0x04,0xc0,0x88,0x21,0x87,0xf1,0x82,0x20,0x64,0x05,0x80,0xc0,
 0x3e,0x01,0xf2,0x30,0x20,0x5f,0xe1,0x83,0x8d,0xe8,0x11,0x03,0xc0,0x00,0x02,0x00,0xe0,0x14,0x06,0x80,
 0x98,0x11,0x04,0x30,0xfe,0x30,0x44,0x0c,0x80,0xb0,0x18,0x22,0x78,0x03,0xe4,0x60,0x40,0xbf,0xc3,0x07,
@@ -555,7 +555,7 @@ const uint8_t OpenSansRegular12ptBitmaps_2[] PROGMEM = {
 };
 
 // Glyphs for Latin Extended-A
-const UnicodeFontGlyph OpenSansRegular12ptGlyphs_2[] PROGMEM = {
+const UnicodeFontGlyph OpenSansCyrillicLatin12Glyphs_2[] PROGMEM = {
     { 0, 0, 11, 14, 11, 0, -14} /* [Ā] 256*/ ,
     { 1, 20, 7, 11, 9, 1, -11} /* [ā] 257*/ ,
     { 2, 30, 11, 15, 11, 0, -15} /* [Ă] 258*/ ,
@@ -686,7 +686,7 @@ const UnicodeFontGlyph OpenSansRegular12ptGlyphs_2[] PROGMEM = {
 };
 
 // Bitmaps for Basic Latin
-const uint8_t OpenSansRegular12ptBitmaps_0[] PROGMEM = {
+const uint8_t OpenSansCyrillicLatin12Bitmaps_0[] PROGMEM = {
 0x00,0x00,0xf5,0x55,0x0f,0xdc,0xe5,0x20,0x08,0x81,0x10,0x24,0x3f,0xf1,0x10,0x22,0x04,0x47,0xfe,0x12,
 0x04,0x40,0x88,0x11,0x00,0x10,0x7e,0xd2,0x90,0xd0,0x70,0x1e,0x13,0x13,0x96,0xfc,0x10,0x10,0x70,0x49,
 0x08,0x89,0x88,0x90,0x8a,0xe8,0xa9,0x95,0x17,0x51,0x09,0x11,0x91,0x10,0x93,0x0e,0x3c,0x0c,0xc1,0x08,
@@ -739,7 +739,7 @@ const uint8_t OpenSansRegular12ptBitmaps_0[] PROGMEM = {
 };
 
 // Glyphs for Basic Latin
-const UnicodeFontGlyph OpenSansRegular12ptGlyphs_0[] PROGMEM = {
+const UnicodeFontGlyph OpenSansCyrillicLatin12Glyphs_0[] PROGMEM = {
     { 31, 0, 1, 1, 10, 0, -1} /* [] 31*/ ,
     { 32, 1, 1, 1, 4, 0, -1} /* [ ] 32*/ ,
     { 33, 2, 2, 12, 4, 1, -12} /* [!] 33*/ ,
@@ -838,10 +838,10 @@ const UnicodeFontGlyph OpenSansRegular12ptGlyphs_0[] PROGMEM = {
     { 126, 969, 8, 2, 10, 1, -7} /* [~] 126*/ 
 };
 
-const UnicodeFontBlock OpenSansRegular12ptBlocks[] PROGMEM = {
-    {1024, OpenSansRegular12ptBitmaps_8, OpenSansRegular12ptGlyphs_8, 255} /* Cyrillic */,
-    {256, OpenSansRegular12ptBitmaps_2, OpenSansRegular12ptGlyphs_2, 127} /* Latin Extended-A */,
-    {0, OpenSansRegular12ptBitmaps_0, OpenSansRegular12ptGlyphs_0, 127} /* Basic Latin */
+const UnicodeFontBlock OpenSansCyrillicLatin12Blocks[] PROGMEM = {
+    {1024, OpenSansCyrillicLatin12Bitmaps_8, OpenSansCyrillicLatin12Glyphs_8, 255} /* Cyrillic */,
+    {256, OpenSansCyrillicLatin12Bitmaps_2, OpenSansCyrillicLatin12Glyphs_2, 127} /* Latin Extended-A */,
+    {0, OpenSansCyrillicLatin12Bitmaps_0, OpenSansCyrillicLatin12Glyphs_0, 127} /* Basic Latin */
 };
 
-const UnicodeFont OpenSansRegular12pt[] PROGMEM = { {OpenSansRegular12ptBlocks, 3, 19, TCFONT_ONE_BIT_PER_PIXEL} };
+const UnicodeFont OpenSansCyrillicLatin12[] PROGMEM = { {OpenSansCyrillicLatin12Blocks, 3, 19, TCFONT_ONE_BIT_PER_PIXEL} };
