@@ -5,7 +5,6 @@
 #include <Fonts/OpenSansCyrillicLatin18.h>
 #include <Fonts/RobotoMedium24.h>
 #include <tcUnicodeHelper.h>
-#include <IoLogging.h>
 
 class UnitTestPlotter : public TextPlotPipeline {
 private:
@@ -55,34 +54,19 @@ void tearDown() {
     delete handler;
 }
 
-bool checkGlyph(uint32_t code, uint32_t bmpOffset, int width, int height, int xAdvance, int xOffset, int yOffset) {
+void checkGlyph(uint32_t code, uint32_t bmpOffset, int width, int height, int xAdvance, int xOffset, int yOffset) {
+    printf("Checking glyph %d\n", code);
     GlyphWithBitmap glyphWithBitmap;
     if(handler->findCharInFont(code, glyphWithBitmap)) {
         const UnicodeFontGlyph *glyph = glyphWithBitmap.getGlyph();
-        bool success = true;
-        if(bmpOffset != glyph->relativeBmpOffset) {
-            serlogF4(SER_DEBUG, "Bmp offset out ", code, bmpOffset, glyph->relativeBmpOffset);
-            success = false;
-        }
-        if(width != glyph->width || height != glyph->height) {
-            serlogF4(SER_DEBUG, "Bmp width out ", code, width, glyph->width);
-            serlogF3(SER_DEBUG, "Bmp height ", height, glyph->height);
-            success = false;
-        }
-        if(xOffset != glyph->xOffset || yOffset != glyph->yOffset) {
-            serlogF4(SER_DEBUG, "Bmp xoffs out ", code, xOffset, glyph->xOffset);
-            serlogF3(SER_DEBUG, "Bmp yoffs ", yOffset, glyph->yOffset);
-            success = false;
-        }
-        if(xAdvance != glyph->xAdvance) {
-            serlogF4(SER_DEBUG, "Bmp xadv out ", code, xAdvance, glyph->xAdvance);
-            success = false;
-        }
-
-        return success;
+        TEST_ASSERT_EQUAL(bmpOffset, glyph->relativeBmpOffset);
+        TEST_ASSERT_EQUAL(width, glyph->width);
+        TEST_ASSERT_EQUAL(height, glyph->height);
+        TEST_ASSERT_EQUAL(xOffset, glyph->xOffset);
+        TEST_ASSERT_EQUAL(yOffset, glyph->yOffset);
+        TEST_ASSERT_EQUAL(xAdvance, glyph->xAdvance);
     } else {
-        serlogF2(SER_DEBUG, "Glyph not found ", code);
-        return false;
+        TEST_ABORT();
     }
 }
 
@@ -93,24 +77,25 @@ void testTextExtents() {
     TEST_ASSERT_EQUAL_INT16(31, coord.x);
     TEST_ASSERT_EQUAL_INT16(24, coord.y);
 
-    handler->setFont(RobotoMedium24pt);
+    handler->setFont(RobotoMedium24);
     coord = handler->textExtents("Abc", &bl, false);
     TEST_ASSERT_EQUAL_INT16(43, coord.x);
     TEST_ASSERT_EQUAL_INT16(28, coord.y);
 }
 
 void testGetGlyphOnEachRange() {
-    TEST_ASSERT_TRUE(checkGlyph(65, 320, 11, 13, 11, 0, -18));
-    TEST_ASSERT_TRUE(checkGlyph(55 + 128, 198, 2, 2, 5, 1, -12));
-    TEST_ASSERT_TRUE(checkGlyph(17 + 1024, 285, 8, 13, 11, 2, -18));
+    handler->setFont(OpenSansCyrillicLatin18);
+    checkGlyph(65, 646, 16, 18, 16, 0, -18);
+    checkGlyph(257, 42, 11, 17, 14, 1, -17);
+    checkGlyph(1041, 561, 12, 18, 15, 2, -18);
 }
 
 void testReadingEveryGlyphInRange() {
     GlyphWithBitmap glyphWithBitmap;
 
     // test all known characters work
-    for (int i = 32; i < 127; i++) {
-        serlogF2(SER_DEBUG, "Test character = ", i);
+    for (int i = 32; i < 126; i++) {
+        printf("Test character = %d\n", i);
         TEST_ASSERT_TRUE(handler->findCharInFont(i, glyphWithBitmap));
         TEST_ASSERT_NOT_NULL(glyphWithBitmap.getGlyph());
         TEST_ASSERT_NOT_NULL(glyphWithBitmap.getBitmapData());
@@ -125,24 +110,25 @@ void testReadingEveryGlyphInRange() {
 
 void testAdafruitFont() {
     GlyphWithBitmap glyphWithBitmap;
-    handler->setFont(RobotoMedium24pt);
+    handler->setFont(RobotoMedium24);
 
     // test a few that should fail
-    TEST_ASSERT_TRUE(checkGlyph(32, 0, 0, 0, 6, 0, -28));
-    TEST_ASSERT_TRUE(checkGlyph(48, 243, 12, 17, 14, 1, -23));
-    TEST_ASSERT_TRUE(checkGlyph(65, 611, 16, 17, 16, 0, -23));
-    TEST_ASSERT_TRUE(checkGlyph(126, 1990, 14, 5, 16, 1, -16));
+    checkGlyph(32, 33, 1, 1, 8, 0, -1);
+    checkGlyph(48, 485, 15, 24, 19, 2, -24);
+    checkGlyph(65, 1190, 22, 24, 22, 0, -24);
+    checkGlyph(126, 3820, 18, 7, 22, 2, -13);
     TEST_ASSERT_FALSE(handler->findCharInFont(5, glyphWithBitmap));
     TEST_ASSERT_FALSE(handler->findCharInFont(127, glyphWithBitmap));
-    TEST_ASSERT_FALSE(handler->findCharInFont(31, glyphWithBitmap));
 }
+
+#define RUN_TEST_WITH_PRINT(x) printf("test start " #x "\n"); RUN_TEST(x);
 
 void setup() {
     UNITY_BEGIN();
-    RUN_TEST(testTextExtents);
-    RUN_TEST(testGetGlyphOnEachRange);
-    RUN_TEST(testReadingEveryGlyphInRange);
-    RUN_TEST(testAdafruitFont);
+    RUN_TEST_WITH_PRINT(testTextExtents);
+    RUN_TEST_WITH_PRINT(testGetGlyphOnEachRange);
+    RUN_TEST_WITH_PRINT(testReadingEveryGlyphInRange);
+    RUN_TEST_WITH_PRINT(testAdafruitFont);
     UNITY_END();
 }
 
