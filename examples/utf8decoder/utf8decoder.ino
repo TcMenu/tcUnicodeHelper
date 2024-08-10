@@ -1,4 +1,7 @@
-
+/**
+ * This example shows how to use the UTF-8 stream based encoder that's shipped with TcUnicode on its own. The encoder
+ * needs no memory allocation, and is safe and compliant with the specification.
+ */
 #include <Utf8TextProcessor.h>
 #include <Wire.h>
 
@@ -10,8 +13,8 @@ using namespace tccore;
 // library recovers automatically after calling back with TC_UNICODE_CHAR_ERROR as the code.
 //
 void characterReceived(void* optionalUserData, uint32_t convertedCode) {
-    Serial1.print("Unicode=");
-    Serial1.println(convertedCode);
+    Serial.print("Unicode=");
+    Serial.println(convertedCode);
 }
 
 //
@@ -22,7 +25,7 @@ void* optionalUserData = nullptr;
 Utf8TextProcessor textProcessor(characterReceived, optionalUserData, ENCMODE_UTF8); // ENCMODE_EXT_ASCII for extended ASCII processing mode
 
 void setup() {
-    Serial1.begin(115200);
+    Serial.begin(115200);
 
     // put characters into the decoder. Both ASCII and Unicode
     textProcessor.pushChars("Hello world");
