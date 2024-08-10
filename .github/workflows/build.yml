@@ -10,7 +10,7 @@ jobs:
           - examples/utf8decoder/utf8decoder.ino
         include:
           # ESP
-          - example: examples/adafruitGfxUnicode/adaFruitGfxUnicode.ino
+          - example: examples/adafruitGfxUnicode/adafruitGfxUnicode.ino
             board: [esp32dev, esp01_1m]
     steps:
       - uses: actions/checkout@v4
