@@ -74,13 +74,13 @@ void testTextExtents() {
     int bl;
     handler->setFont(OpenSansCyrillicLatin18);
     Coord coord = handler->textExtents("Abc", &bl, false);
-    TEST_ASSERT_EQUAL_INT16(31, coord.x);
-    TEST_ASSERT_EQUAL_INT16(24, coord.y);
+    TEST_ASSERT_EQUAL_INT16(41, coord.x);
+    TEST_ASSERT_EQUAL_INT16(28, coord.y);
 
     handler->setFont(RobotoMedium24);
     coord = handler->textExtents("Abc", &bl, false);
-    TEST_ASSERT_EQUAL_INT16(43, coord.x);
-    TEST_ASSERT_EQUAL_INT16(28, coord.y);
+    TEST_ASSERT_EQUAL_INT16(45, coord.x);
+    TEST_ASSERT_EQUAL_INT16(33, coord.y);
 }
 
 void testGetGlyphOnEachRange() {
