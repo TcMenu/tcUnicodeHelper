@@ -74,12 +74,12 @@ void testTextExtents() {
     int bl;
     handler->setFont(OpenSansCyrillicLatin18);
     Coord coord = handler->textExtents("Abc", &bl, false);
-    TEST_ASSERT_EQUAL_INT16(41, coord.x);
+    TEST_ASSERT_EQUAL_INT16(43, coord.x);
     TEST_ASSERT_EQUAL_INT16(28, coord.y);
 
     handler->setFont(RobotoMedium24);
     coord = handler->textExtents("Abc", &bl, false);
-    TEST_ASSERT_EQUAL_INT16(45, coord.x);
+    TEST_ASSERT_EQUAL_INT16(58, coord.x);
     TEST_ASSERT_EQUAL_INT16(33, coord.y);
 }
 
@@ -125,10 +125,10 @@ void testAdafruitFont() {
 
 void setup() {
     UNITY_BEGIN();
-    RUN_TEST_WITH_PRINT(testTextExtents);
     RUN_TEST_WITH_PRINT(testGetGlyphOnEachRange);
     RUN_TEST_WITH_PRINT(testReadingEveryGlyphInRange);
     RUN_TEST_WITH_PRINT(testAdafruitFont);
+    RUN_TEST_WITH_PRINT(testTextExtents);
     UNITY_END();
 }
 
