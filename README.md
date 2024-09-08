@@ -33,7 +33,7 @@ This package includes a strict asynchronous UTF8 decoder that needs very little 
 
 ## Creating your own tcUnicode or Adafruit GFX fonts
 
-[TcMenu Designer can create tcUnicode and Adafruit fonts](https://www.thecoderscorner.com/products/arduino-libraries/tc-menu/using-custom-fonts-in-menu/#creating-a-unicode-or-adafruit-font-using-the-designer-ui) built into the [tcMenu Designer application](https://github.com/TcMenu/tcMenu/releases). As of Designer 4.3 the bitmap font generator has been substantially improved and produces very high quality font exports, even at very small sizes and includes a bitmap editor to touch up any erring pixels.
+[TcMenu Designer can create tcUnicode and Adafruit fonts](https://tcmenu.github.io/documentation/arduino-libraries/tc-menu/using-custom-fonts-in-menu/#creating-a-unicode-or-adafruit-font-using-the-designer-ui) built into the [tcMenu Designer application](https://github.com/TcMenu/tcMenu/releases). As of Designer 4.3 the bitmap font generator has been substantially improved and produces very high quality font exports, even at very small sizes and includes a bitmap editor to touch up any erring pixels.
 
 If someone from the U8G2 and TFT_eSPI teams help us, we'll make it possible to generate U8G2 and TFT_eSPI bitmap fonts from there too. 
 
@@ -58,7 +58,7 @@ The included fonts are separately licenced [Font licence page](src/Fonts/font-li
 
 ## Questions and documentation
 
-* [UTF-8 decoder and Unicode font documentation on TheCodersCorner.com](https://www.thecoderscorner.com/products/arduino-libraries/tc-unicode-helper/)
+* [UTF-8 decoder and Unicode font documentation on TheCodersCorner.com](https://tcmenu.github.io/documentation/arduino-libraries/tc-unicode-helper/)
 * [discussions section of the tcMenu repo](https://github.com/TcMenu/tcMenu/discussions) of tcmenu git repo
 * [Arduino discussion forum](https://forum.arduino.cc/) where questions can be asked, please tag me using `@davetcc`.
 * [Legacy discussion forum probably to be made read only soon](https://www.thecoderscorner.com/jforum/).
