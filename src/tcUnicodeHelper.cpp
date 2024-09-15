@@ -28,7 +28,9 @@ Coord UnicodeFontHandler::textExtents(const char *text, int *baseline, bool prog
     return Coord((int)xExtentCurrent, getYAdvance());
 }
 
+#ifndef internal_max
 #define internal_max(a, b)  ((a) < (b) ? (b) : (a));
+#endif // internal_max
 
 void UnicodeFontHandler::writeUnicode(uint32_t unicodeText) {
     // make sure it's printable.
