@@ -14,6 +14,10 @@ typedef uint32_t bitmap_size_t;
 typedef uint16_t bitmap_size_t;
 #endif //HUGE_FONT_BITMAPS
 
+#ifndef PROGMEM
+#define PROGMEM
+#endif
+
 #ifndef _GFXFONT_H_
 #define _GFXFONT_H_
 

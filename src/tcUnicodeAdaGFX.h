@@ -23,7 +23,7 @@ namespace tcgfx {
         explicit AdafruitTextPlotPipeline(Adafruit_GFX *gfx) : gfx(gfx) {
         }
 
-        ~AdafruitTextPlotPipeline() = default;
+        ~AdafruitTextPlotPipeline() override = default;
 
         void drawPixel(uint16_t x, uint16_t y, uint32_t dc) override { return gfx->drawPixel(x, y, dc); }
 
