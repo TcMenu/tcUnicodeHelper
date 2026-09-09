@@ -1,10 +1,9 @@
 
-#include <Arduino.h>
-#include <unity.h>
 #include <deque>
 #include <Fonts/OpenSansCyrillicLatin18.h>
 #include <Fonts/RobotoMedium24.h>
 #include <tcUnicodeHelper.h>
+#include <unity.h>
 
 class UnitTestPlotter : public TextPlotPipeline {
 private:
@@ -43,7 +42,11 @@ public:
 
 UnicodeFontHandler* handler = nullptr;
 
+void setupUtf8Processor();
+
 void setUp() {
+    setupUtf8Processor();
+
     unitTestPlotter.init();
     handler = new UnicodeFontHandler(&unitTestPlotter, ENCMODE_UTF8);
     handler->setFont(OpenSansCyrillicLatin18);
@@ -123,13 +126,32 @@ void testAdafruitFont() {
 
 #define RUN_TEST_WITH_PRINT(x) printf("test start " #x "\n"); RUN_TEST(x);
 
-void setup() {
+void testUtf8EncoderAscii();
+void testUtf8EncoderUnicodeCodesDirect();
+void testUtf8EncoderUnicodeBasicCase();
+void testUtf8EncoderUnicodeMulti();
+void testUtf8EncoderUnicodeOverlongNull();
+void testBrokenSequenceContinueAsAscii();
+void testinvalidBytesNotProcessed();
+void testUtf8EncoderUnicodeOverlongSlash();
+void testUtf8EncoderReallyLargeCodes();
+
+int main(int argc, char **argv) {
     UNITY_BEGIN();
     RUN_TEST_WITH_PRINT(testGetGlyphOnEachRange);
     RUN_TEST_WITH_PRINT(testReadingEveryGlyphInRange);
     RUN_TEST_WITH_PRINT(testAdafruitFont);
     RUN_TEST_WITH_PRINT(testTextExtents);
-    UNITY_END();
-}
 
-void loop() {}
+    RUN_TEST(testUtf8EncoderAscii);
+    RUN_TEST(testUtf8EncoderUnicodeCodesDirect);
+    RUN_TEST(testUtf8EncoderUnicodeBasicCase);
+    RUN_TEST(testUtf8EncoderUnicodeMulti);
+    RUN_TEST(testUtf8EncoderUnicodeOverlongNull);
+    RUN_TEST(testBrokenSequenceContinueAsAscii);
+    RUN_TEST(testinvalidBytesNotProcessed);
+    RUN_TEST(testUtf8EncoderUnicodeOverlongSlash);
+    RUN_TEST(testUtf8EncoderReallyLargeCodes);
+
+    return UNITY_END();
+}

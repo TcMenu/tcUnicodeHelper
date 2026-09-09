@@ -1,18 +1,17 @@
 // with thanks to https://www.cl.cam.ac.uk/~mgk25/ucs/examples/UTF-8-test.txt for many of the ideas in this test.
 
-#include <Arduino.h>
-#include <unity.h>
 #include <deque>
+#include <TaskPlatformDeps.h>
 #include <Utf8TextProcessor.h>
+#include <unity.h>
 
 std::deque<uint32_t> unicodeChars;
 const size_t max_size = 10;
 
-void setUp() {
+void setupUtf8Processor() {
     unicodeChars.clear();
 }
 
-void tearDown() {}
 
 void textHandler(void* handler, uint32_t charCode) {
     if (unicodeChars.size() == max_size) {
@@ -202,19 +201,3 @@ void testUtf8EncoderReallyLargeCodes() {
     TEST_ASSERT_EQUAL_UINT32(0xFB16, getFromBufferOrError());
     TEST_ASSERT_FALSE(!unicodeChars.empty());
 }
-
-void setup() {
-    UNITY_BEGIN();
-    RUN_TEST(testUtf8EncoderAscii);
-    RUN_TEST(testUtf8EncoderUnicodeCodesDirect);
-    RUN_TEST(testUtf8EncoderUnicodeBasicCase);
-    RUN_TEST(testUtf8EncoderUnicodeMulti);
-    RUN_TEST(testUtf8EncoderUnicodeOverlongNull);
-    RUN_TEST(testBrokenSequenceContinueAsAscii);
-    RUN_TEST(testinvalidBytesNotProcessed);
-    RUN_TEST(testUtf8EncoderUnicodeOverlongSlash);
-    RUN_TEST(testUtf8EncoderReallyLargeCodes);
-    UNITY_END();
-}
-
-void loop() {}
